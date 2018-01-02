@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{'Content' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h3>{{news.title}}</h3>
+  <img [src]='news.top_image'/>
+  <br><br>
+  Source: <a [href]="news.url">{{news.url}}</a>
+  <p [innerHTML]="news.text"></p>
+</ion-content>
