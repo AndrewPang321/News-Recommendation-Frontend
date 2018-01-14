@@ -6,7 +6,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { firebaseConfig } from '../environment';
+import { AuthService } from '../providers/auth.service';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -28,6 +30,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig, 'news-recommendation'),  // imports firebase/app
     AngularFireDatabaseModule,  // imports firebase/database
+    AngularFireAuthModule,      // imports firebase/authentication
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {

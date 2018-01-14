@@ -25678,3 +25678,23 @@ ion-navbar.toolbar {
   min-height: calc(46px + constant(safe-area-inset-bottom));
   min-height: calc(46px + env(safe-area-inset-bottom));
 }
+
+.signup_login {
+  float: right;
+  display: inline-block;
+}
+
+.signup_login button {
+  margin: 13px 8px;
+  padding: 0;
+}
+
+.signup_login ionic-input {
+  border-color: #727272;
+}
+
+button {
+  color: #FC5B62;
+  font-family: Circular;
+  background-color: transparent;
+}
