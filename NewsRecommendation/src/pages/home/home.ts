@@ -3,9 +3,12 @@ import { NavController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../providers/auth.service';
-//import { User } from '../../models/users';
+// import { User } from '../../models/users';
 
 import { ContentPage } from '../content/content';
+
+// Global vars from JS
+declare var User: any;
 
 @Component({
   templateUrl: 'home.html',
@@ -17,6 +20,10 @@ export class HomePage {
 
   user = {};
   displayInputBox: boolean = true;
+
+  // Get the elements in the Global var User
+  private email: any = User.email;
+  private password: any = User.password;
 
   constructor(public navCtrl: NavController, public db: AngularFireDatabase, public authService: AuthService) {
     // 'BBC/articles' is the name of the list in Firebase Realtime Database
@@ -33,15 +40,19 @@ export class HomePage {
   }
 
   signup() {
-    this.authService.signup();
+    // this.authService.signup();
+    this.authService.signup(this.email, this.password);
   }
 
   login() {
-     console.log(this.authService
-      .login(this.user.email, this.user.password));
-//      .then(function(result){
-//        console.log(result);
-//      });
+    // this.authService.login(this.user.email, this.user.password)
+    this.authService.login(this.email, this.password)
+      .then((result: any) => {
+        console.log(result);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
     //this.displayInputBox = false;
   }
 

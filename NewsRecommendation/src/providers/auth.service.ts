@@ -14,31 +14,35 @@ export class AuthService {
   signup(newEmail: string, newPassword: string) {
     this.firebaseAuth
       .auth
-      .createUserWithEmailAndPassword("csiuab@ust.hk", "csiuab")
+      .createUserWithEmailAndPassword(newEmail, newPassword)
+      // .createUserWithEmailAndPassword("csiuab@ust.hk", "csiuab")
       .then( newUser => {
         firebase
         .database()
         .ref('/Users')
         .child(newUser.uid)
-        .set({ email: "csiuab@ust.hk" });
+        // .set({ email: "csiuab@ust.hk" });
+        .set({ email: `${newEmail}` });
         })
       .then(value => {
         console.log('Success!', value);
       })
       .catch(err => {
-        console.log('Something went wrong:',err.message);
+        console.log('Something went wrong:', err.message);
       });
   }
 
   login(email: string, password: string) {
-    this.firebaseAuth
+    return new Promise((resolve, reject) => {
+      this.firebaseAuth
       .auth
       .signInWithEmailAndPassword(email, password)
       .then(function(firebaseUser) {
-        return new Promise(function(resolve, reject) {
-          resolve("true");
-          reject('some fail stuff');
-        });
+        resolve("true");
+        // return new Promise(function(resolve, reject) {
+        //   resolve("true");
+        //   // reject('some fail stuff');
+        // });
       })
       .catch(function(error) {
         if (error.code === 'auth/wrong-password') {
@@ -48,11 +52,13 @@ export class AuthService {
           alert(error.message);
         }
         console.log(error);
-          return new Promise(function(resolve, reject) {
-            resolve("false");
-            reject('some fail stuff');
-          });
+        reject("false");
+          // return new Promise(function(resolve, reject) {
+          //   // resolve("false");
+          //   reject('some fail stuff');
+          // });
         });
+    })
   }
 
   logout() {
