@@ -20,7 +20,7 @@ declare var User: any;
 })
 export class HomePage {
 
-  newsFromBrand: Observable<any[]>;
+  // newsFromBrand: Observable<any[]>;
 
   user = {};
   displayInputBox: boolean = true;
@@ -32,7 +32,7 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, public db: AngularFireDatabase, public authService: AuthService, public homePageService: HomePageService) {
     // 'BBC/articles' is the name of the list in Firebase Realtime Database
-    this.newsFromBrand = db.list('BBC/articles').valueChanges();
+    // this.newsFromBrand = db.list('BBC/articles').valueChanges();
     // Get Now Playing Movies data
     this.homePageService.getNowPlayingMovies()
       .then((result: any) => {
@@ -40,7 +40,7 @@ export class HomePage {
         for (let i = 0; i < result.results.length; i++) {
           result.results[i].poster_path = `https://image.tmdb.org/t/p/w500${result.results[i].poster_path}`
         }
-        
+
         this.movies = result.results;
         console.log(this.movies)
 
@@ -48,12 +48,12 @@ export class HomePage {
       .catch((error: any) => {
         console.log(error);
       });
-    console.log(this.newsFromBrand);
+    // console.log(this.newsFromBrand);
   }
 
   itemTapped(event, item) {
     // Push to content page
-    console.log("News clicked!");
+    console.log("Movie clicked!");
     this.navCtrl.push(ContentPage, {
       item: item
     });
