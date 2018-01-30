@@ -6,13 +6,17 @@ import { AuthService } from '../../providers/auth.service';
 // import { User } from '../../models/users';
 
 import { ContentPage } from '../content/content';
+import { HomePageService } from './home-service';
 
 // Global vars from JS
 declare var User: any;
 
 @Component({
   templateUrl: 'home.html',
-  providers: [AuthService]
+  providers: [
+    AuthService,
+    HomePageService
+  ]
 })
 export class HomePage {
 
@@ -20,14 +24,30 @@ export class HomePage {
 
   user = {};
   displayInputBox: boolean = true;
+  movies: any;
 
   // Get the elements in the Global var User
   private email: any = User.email;
   private password: any = User.password;
 
-  constructor(public navCtrl: NavController, public db: AngularFireDatabase, public authService: AuthService) {
+  constructor(public navCtrl: NavController, public db: AngularFireDatabase, public authService: AuthService, public homePageService: HomePageService) {
     // 'BBC/articles' is the name of the list in Firebase Realtime Database
     this.newsFromBrand = db.list('BBC/articles').valueChanges();
+    // Get Now Playing Movies data
+    this.homePageService.getNowPlayingMovies()
+      .then((result: any) => {
+
+        for (let i = 0; i < result.results.length; i++) {
+          result.results[i].poster_path = `https://image.tmdb.org/t/p/w500${result.results[i].poster_path}`
+        }
+        
+        this.movies = result.results;
+        console.log(this.movies)
+
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
     console.log(this.newsFromBrand);
   }
 
