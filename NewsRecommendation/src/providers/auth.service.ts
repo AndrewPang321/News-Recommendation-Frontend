@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs/Observable';
@@ -7,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 export class AuthService {
   user: Observable<firebase.User>;
 
-  constructor(private firebaseAuth: AngularFireAuth) {
+  constructor(private db: AngularFireDatabase, private firebaseAuth: AngularFireAuth) {
     this.user = firebaseAuth.authState;
   }
 
@@ -17,12 +18,13 @@ export class AuthService {
       .createUserWithEmailAndPassword(newEmail, newPassword)
       // .createUserWithEmailAndPassword("csiuab@ust.hk", "csiuab")
       .then( newUser => {
-        firebase
-        .database()
-        .ref('/Users')
-        .child(newUser.uid)
-        // .set({ email: "csiuab@ust.hk" });
-        .set({ email: `${newEmail}` });
+        this.db.object(`Users/${newUser.uid}`).set({ email: `${newEmail}`});
+        // firebase
+        // .database()
+        // .ref('Users')
+        // .child(newUser.uid)
+        // // .set({ email: "csiuab@ust.hk" });
+        // .set({ email: `${newEmail}` });
         })
       .then(value => {
         console.log('Success!', value);

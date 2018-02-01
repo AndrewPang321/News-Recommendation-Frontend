@@ -8,9 +8,42 @@
 </ion-header>
 
 <ion-content padding>
+  <h3>{{movie.title}}</h3>
+  <h6 ion-text color="primary">{{tagline}}</h6>
+  <img class="resize" [src]='movie.poster_path'/>
+  <ion-grid>
+    <ion-row>
+      <ion-col>Release Date: {{release_date}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>Runtime: {{runtime}} mins</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>Languages: <ion-badge *ngFor="let lang of spoken_languages">{{lang.name}}</ion-badge></ion-col>
+    </ion-row>
+    <ion-row *ngIf="adult">
+      <ion-col>Adult: <ion-badge color="danger">adult-only</ion-badge></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>Genres: <ion-badge *ngFor="let type of genres">{{type.name}}</ion-badge></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>Rating: <ion-badge>{{vote_average}}</ion-badge></ion-col>
+    </ion-row>
+    <ion-row><ion-col></ion-col></ion-row>
+    <ion-row>
+      <ion-col>Overview:</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>{{overview}}</ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<!-- <ion-content padding>
   <h3>{{news.title}}</h3>
   <img [src]='news.top_image'/>
   <br><br>
   Source: <a [href]="news.url">{{news.url}}</a>
   <p [innerHTML]="news.text"></p>
-</ion-content>
+</ion-content> -->

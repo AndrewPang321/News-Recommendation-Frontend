@@ -6,35 +6,53 @@ import { Observable } from 'rxjs/Observable';
 // import { User } from '../../models/users';
 
 import { ContentPage } from '../content/content';
+import { HomePageService } from './home-service';
 
 // Global vars from JS
 //declare var User: any;
 
 @Component({
-  templateUrl: 'home.html'
-  //providers: [AuthService]
+  templateUrl: 'home.html',
+  providers: [
+    HomePageService
+  ]
 })
 export class HomePage {
 
-  newsFromBrand: Observable<any[]>;
+  // newsFromBrand: Observable<any[]>;
 
   //user = {};
-  //private displayInputBox: boolean = true;
+  //displayInputBox: boolean = true;
+  movies: any;
 
   // Get the elements in the Global var User
   //private email: any = User.email;
   //private password: any = User.password;
 
-  //, public authService: AuthService
-  constructor(public navCtrl: NavController, public db: AngularFireDatabase) {
+  constructor(public navCtrl: NavController, public db: AngularFireDatabase, public homePageService: HomePageService) {
     // 'BBC/articles' is the name of the list in Firebase Realtime Database
-    this.newsFromBrand = db.list('BBC/articles').valueChanges();
-    console.log(this.newsFromBrand);
+    // this.newsFromBrand = db.list('BBC/articles').valueChanges();
+    // Get Now Playing Movies data
+    this.homePageService.getNowPlayingMovies()
+      .then((result: any) => {
+
+        for (let i = 0; i < result.results.length; i++) {
+          result.results[i].poster_path = `https://image.tmdb.org/t/p/w500${result.results[i].poster_path}`
+        }
+
+        this.movies = result.results;
+        console.log(this.movies)
+
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+    // console.log(this.newsFromBrand);
   }
 
   itemTapped(event, item) {
     // Push to content page
-    console.log("News clicked!");
+    console.log("Movie clicked!");
     this.navCtrl.push(ContentPage, {
       item: item
     });

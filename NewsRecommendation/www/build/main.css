@@ -25679,6 +25679,14 @@ ion-navbar.toolbar {
   min-height: calc(46px + env(safe-area-inset-bottom));
 }
 
+img.resize {
+  max-width: 60%;
+  max-height: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
 #signup_login {
   background-image: url(https://d3cbihxaqsuq0s.cloudfront.net/images/17935469_xl.jpg);
   background-size: cover;
