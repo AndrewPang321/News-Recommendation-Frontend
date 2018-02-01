@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+
+<ion-content id="signup_login">
+  <div class="outer-container">
+    <div class="inner-container">
+      <div>
+        <ion-segment [(ngModel)]="auth_select">
+          <ion-segment-button value="sign_up">
+            Sign Up
+          </ion-segment-button>
+          <ion-segment-button value="login">
+            Login
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+
+      <!-- showing up signup/login div -->
+      <div [ngSwitch]="auth_select">
+        <!-- login div -->
+        <div *ngSwitchCase="'login'">
+          <div *ngIf="displayInputBox" class="input"><ion-input style="width: 250px;" max=20 type="email" placeholder="Email" [(ngModel)]="email"></ion-input></div>
+          <div *ngIf="displayInputBox" class="input"><ion-input style="width: 250px;" max=20 type="password" placeholder="Password" [(ngModel)]="password"></ion-input></div>
+          <div>
+            <button ionic-button (click)="login()">
+              Login
+            </button>
+          </div>
+        </div>
+        <!-- signup div -->
+        <div *ngSwitchCase="'sign_up'" class="input-container">
+        </div>
+      </div>
+    </div>
+  </div>
+  <p>Photo by Aleksandrs Tihonovs</p>
+</ion-content>

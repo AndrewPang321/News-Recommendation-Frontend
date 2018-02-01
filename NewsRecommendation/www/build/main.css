@@ -25679,22 +25679,42 @@ ion-navbar.toolbar {
   min-height: calc(46px + env(safe-area-inset-bottom));
 }
 
-.signup_login {
-  float: right;
-  display: inline-block;
+#signup_login {
+  background-image: url(https://d3cbihxaqsuq0s.cloudfront.net/images/17935469_xl.jpg);
+  background-size: cover;
+  opacity: 0.8;
 }
 
-.signup_login button {
-  margin: 13px 8px;
-  padding: 0;
+.outer-container {
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
-.signup_login ionic-input {
-  border-color: #727272;
+.inner-container {
+  width: 300px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
-button {
-  color: #FC5B62;
-  font-family: Circular;
-  background-color: transparent;
+.input {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
