@@ -77,6 +77,10 @@ export class HomePage {
         this.translate.instant("NOT_LOGIN_SUBTITLE")
       );
     } else {
+      // Delete clicked movie in the "dislike" list in DB
+      const dislikedRef = this.db.list(`Users/${User.firebase_user.uid}/dislike`);
+      dislikedRef.remove(movie.id.toString());
+      // Add clicked movie in the "like" list in DB
       const likedRef = this.db.list(`Users/${User.firebase_user.uid}/like`);
       likedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids });
     }
@@ -91,6 +95,10 @@ export class HomePage {
         this.translate.instant("NOT_LOGIN_SUBTITLE")
       );
     } else {
+      // Delete clicked movie in the "like" list in DB
+      const likedRef = this.db.list(`Users/${User.firebase_user.uid}/like`);
+      likedRef.remove(movie.id.toString());
+      // Add clicked movie in the "dislike" list in DB
       const dislikedRef = this.db.list(`Users/${User.firebase_user.uid}/dislike`);
       dislikedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids });
     }
