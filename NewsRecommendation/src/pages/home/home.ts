@@ -10,7 +10,7 @@ import { HomePageService } from './home-service';
 import { SpinnerService } from '../services/spinner-service';
 
 // Global vars from JS
-//declare var User: any;
+declare var User: any;
 
 @Component({
   templateUrl: 'home.html',
@@ -61,6 +61,16 @@ export class HomePage {
         console.log(error);
       });
     // console.log(this.newsFromBrand);
+  }
+
+  like(event, movie) {
+    const likedRef = this.db.list(`Users/${User.firebase_user.uid}/like`);
+    likedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids });
+  }
+
+  dislike(event, movie) {
+    const dislikedRef = this.db.list(`Users/${User.firebase_user.uid}/dislike`);
+    dislikedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids });
   }
 
   itemTapped(event, item) {
