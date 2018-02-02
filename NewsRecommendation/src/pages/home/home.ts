@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { ContentPage } from '../content/content';
 import { HomePageService } from './home-service';
+import { SpinnerService } from '../services/spinner-service';
 
 // Global vars from JS
 //declare var User: any;
@@ -14,7 +15,8 @@ import { HomePageService } from './home-service';
 @Component({
   templateUrl: 'home.html',
   providers: [
-    HomePageService
+    HomePageService,
+    SpinnerService
   ]
 })
 export class HomePage {
@@ -31,12 +33,18 @@ export class HomePage {
   //private email: any = User.email;
   //private password: any = User.password;
 
-  constructor(public navCtrl: NavController, public db: AngularFireDatabase, public homePageService: HomePageService) {
+  constructor(
+    public navCtrl: NavController,
+    public db: AngularFireDatabase,
+    public homePageService: HomePageService,
+    public spinnerService: SpinnerService
+  ) {
     // 'BBC/articles' is the name of the list in Firebase Realtime Database
     // this.newsFromBrand = db.list('BBC/articles').valueChanges();
     // Get Now Playing Movies data
     this.homePageService.getNowPlayingMovies(this.current_page)
       .then((result: any) => {
+        this.spinnerService.show();
 
         for (let i = 0; i < result.results.length; i++) {
           result.results[i].poster_path = `https://image.tmdb.org/t/p/w500${result.results[i].poster_path}`
@@ -44,10 +52,12 @@ export class HomePage {
 
         this.movies = result.results;
         this.total_pages = result.total_pages;
+        this.spinnerService.hide();
         // console.log(this.movies)
-
+        
       })
       .catch((error: any) => {
+        this.spinnerService.hide();
         console.log(error);
       });
     // console.log(this.newsFromBrand);

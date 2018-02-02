@@ -4,13 +4,15 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 
 import { ContentPageService } from './content-service';
+import { SpinnerService } from '../services/spinner-service';
 // import { EscapeHtmlPipe } from '../../pipes/keep-html.pipe';
 
 @Component({
   selector: 'page-content',
   templateUrl: 'content.html',
   providers: [
-    ContentPageService
+    ContentPageService,
+    SpinnerService
   ]
 })
 export class ContentPage {
@@ -26,7 +28,15 @@ export class ContentPage {
   runtime: any;
   spoken_languages: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public db: AngularFireDatabase, public contentPageService: ContentPageService) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public db: AngularFireDatabase,
+    public contentPageService: ContentPageService,
+    public spinnerService: SpinnerService
+  ) {
+    this.spinnerService.show();
+    
     // Get the item from page navigation from home page
     this.movie = navParams.get('item');
     console.log(this.movie);
@@ -44,8 +54,10 @@ export class ContentPage {
         this.runtime = result.runtime;
         this.spoken_languages = result.spoken_languages;
 
+        this.spinnerService.hide();
       })
       .catch((error: any) => {
+        this.spinnerService.hide();
         console.log(error);
       });
 
