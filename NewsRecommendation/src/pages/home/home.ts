@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
+import { TranslateService } from '@ngx-translate/core';
 //import { AuthService } from '../../providers/auth.service';
 // import { User } from '../../models/users';
 
 import { ContentPage } from '../content/content';
 import { HomePageService } from './home-service';
 import { SpinnerService } from '../services/spinner-service';
+import { CommonUtilService } from '../services/common-util-service';
 
 // Global vars from JS
 declare var User: any;
@@ -16,7 +18,8 @@ declare var User: any;
   templateUrl: 'home.html',
   providers: [
     HomePageService,
-    SpinnerService
+    SpinnerService,
+    CommonUtilService
   ]
 })
 export class HomePage {
@@ -36,8 +39,10 @@ export class HomePage {
   constructor(
     public navCtrl: NavController,
     public db: AngularFireDatabase,
+    private translate: TranslateService,
     public homePageService: HomePageService,
-    public spinnerService: SpinnerService
+    public spinnerService: SpinnerService,
+    public commonUtilService: CommonUtilService,
   ) {
     // 'BBC/articles' is the name of the list in Firebase Realtime Database
     // this.newsFromBrand = db.list('BBC/articles').valueChanges();
@@ -64,13 +69,31 @@ export class HomePage {
   }
 
   like(event, movie) {
-    const likedRef = this.db.list(`Users/${User.firebase_user.uid}/like`);
-    likedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids });
+    if (User.email === null || User.password === null || User.firebase_user === null) {
+      this.commonUtilService.customizePopup(
+        event, 
+        this.navCtrl,
+        this.translate.instant("NOT_LOGIN"),
+        this.translate.instant("NOT_LOGIN_SUBTITLE")
+      );
+    } else {
+      const likedRef = this.db.list(`Users/${User.firebase_user.uid}/like`);
+      likedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids });
+    }
   }
 
   dislike(event, movie) {
-    const dislikedRef = this.db.list(`Users/${User.firebase_user.uid}/dislike`);
-    dislikedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids });
+    if (User.email === null || User.password === null || User.firebase_user === null) {
+      this.commonUtilService.customizePopup(
+        event, 
+        this.navCtrl,
+        this.translate.instant("NOT_LOGIN"),
+        this.translate.instant("NOT_LOGIN_SUBTITLE")
+      );
+    } else {
+      const dislikedRef = this.db.list(`Users/${User.firebase_user.uid}/dislike`);
+      dislikedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids });
+    }
   }
 
   itemTapped(event, item) {

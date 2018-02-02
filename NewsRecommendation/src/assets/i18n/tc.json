@@ -1,4 +1,7 @@
 {
     "Home": "主頁",
-    "Content": "內容"
+    "Content": "內容",
+    "COMMON_OK": "確定",
+    "NOT_LOGIN": "還未登入!",
+    "NOT_LOGIN_SUBTITLE": "請於登入後才使用like和dislike功能。"
 }

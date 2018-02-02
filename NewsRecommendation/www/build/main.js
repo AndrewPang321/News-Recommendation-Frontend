@@ -42,9 +42,11 @@ webpackEmptyAsyncContext.id = 196;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__content_content__ = __webpack_require__(296);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__home_service__ = __webpack_require__(460);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_spinner_service__ = __webpack_require__(297);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ngx_translate_core__ = __webpack_require__(236);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__content_content__ = __webpack_require__(296);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__home_service__ = __webpack_require__(460);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_spinner_service__ = __webpack_require__(297);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_common_util_service__ = __webpack_require__(462);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -57,8 +59,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 //import { AuthService } from '../../providers/auth.service';
 // import { User } from '../../models/users';
+
 
 
 
@@ -66,12 +70,14 @@ var HomePage = (function () {
     // Get the elements in the Global var User
     //private email: any = User.email;
     //private password: any = User.password;
-    function HomePage(navCtrl, db, homePageService, spinnerService) {
+    function HomePage(navCtrl, db, translate, homePageService, spinnerService, commonUtilService) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.db = db;
+        this.translate = translate;
         this.homePageService = homePageService;
         this.spinnerService = spinnerService;
+        this.commonUtilService = commonUtilService;
         this.current_page = 1;
         // 'BBC/articles' is the name of the list in Firebase Realtime Database
         // this.newsFromBrand = db.list('BBC/articles').valueChanges();
@@ -94,17 +100,27 @@ var HomePage = (function () {
         // console.log(this.newsFromBrand);
     }
     HomePage.prototype.like = function (event, movie) {
-        var likedRef = this.db.list("Users/" + User.firebase_user.uid + "/like");
-        likedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids });
+        if (User.email === null || User.password === null || User.firebase_user === null) {
+            this.commonUtilService.customizePopup(event, this.navCtrl, this.translate.instant("NOT_LOGIN"), this.translate.instant("NOT_LOGIN_SUBTITLE"));
+        }
+        else {
+            var likedRef = this.db.list("Users/" + User.firebase_user.uid + "/like");
+            likedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids });
+        }
     };
     HomePage.prototype.dislike = function (event, movie) {
-        var dislikedRef = this.db.list("Users/" + User.firebase_user.uid + "/dislike");
-        dislikedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids });
+        if (User.email === null || User.password === null || User.firebase_user === null) {
+            this.commonUtilService.customizePopup(event, this.navCtrl, this.translate.instant("NOT_LOGIN"), this.translate.instant("NOT_LOGIN_SUBTITLE"));
+        }
+        else {
+            var dislikedRef = this.db.list("Users/" + User.firebase_user.uid + "/dislike");
+            dislikedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids });
+        }
     };
     HomePage.prototype.itemTapped = function (event, item) {
         // Push to content page
         console.log("Movie clicked!");
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__content_content__["a" /* ContentPage */], {
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__content_content__["a" /* ContentPage */], {
             item: item
         });
     };
@@ -136,16 +152,15 @@ var HomePage = (function () {
 HomePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"/Users/AndrewPang/git/News-Recommendation-Frontend/NewsRecommendation/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <!--\n    <div class="signup_login" *ngIf="displayInputBox"><ion-input max=20 type="password" placeholder="Password" [(ngModel)]="password"></ion-input></div>\n    <div class="signup_login" *ngIf="displayInputBox"><ion-input max=20 type="email" placeholder="Email" [(ngModel)]="email"></ion-input></div>\n    -->\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n\n  <ion-card *ngFor="let movie of movies">\n    <ion-card-content (click)="itemTapped($event, movie)">\n      <img [src]="movie.poster_path"/>\n      <ion-card-title>\n        {{movie.title}}\n        <ion-badge float-end>{{movie.vote_average}}</ion-badge>\n      </ion-card-title>\n    </ion-card-content>\n\n    <ion-row no-padding>\n      <ion-col text-center>\n        <button ion-button clear small color="primary" icon-start (click)="like($event, movie)">\n          <ion-icon name=\'thumbs-up\'></ion-icon>\n          Like\n        </button>\n      </ion-col>\n      <ion-col text-center>\n        <button ion-button clear small color="danger" icon-start (click)="dislike($event, movie)">\n          <ion-icon name=\'thumbs-down\'></ion-icon>\n          Dislike\n        </button>\n      </ion-col>\n    </ion-row>\n  </ion-card>\n\n  <ion-infinite-scroll (ionInfinite)="$event.waitFor(doInfinite())">\n    <ion-infinite-scroll-content></ion-infinite-scroll-content>\n  </ion-infinite-scroll>\n   \n</ion-content>\n'/*ion-inline-end:"/Users/AndrewPang/git/News-Recommendation-Frontend/NewsRecommendation/src/pages/home/home.html"*/,
         providers: [
-            __WEBPACK_IMPORTED_MODULE_4__home_service__["a" /* HomePageService */],
-            __WEBPACK_IMPORTED_MODULE_5__services_spinner_service__["a" /* SpinnerService */]
+            __WEBPACK_IMPORTED_MODULE_5__home_service__["a" /* HomePageService */],
+            __WEBPACK_IMPORTED_MODULE_6__services_spinner_service__["a" /* SpinnerService */],
+            __WEBPACK_IMPORTED_MODULE_7__services_common_util_service__["a" /* CommonUtilService */]
         ]
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */],
-        __WEBPACK_IMPORTED_MODULE_4__home_service__["a" /* HomePageService */],
-        __WEBPACK_IMPORTED_MODULE_5__services_spinner_service__["a" /* SpinnerService */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__ngx_translate_core__["c" /* TranslateService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ngx_translate_core__["c" /* TranslateService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__home_service__["a" /* HomePageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__home_service__["a" /* HomePageService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_6__services_spinner_service__["a" /* SpinnerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_spinner_service__["a" /* SpinnerService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_7__services_common_util_service__["a" /* CommonUtilService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__services_common_util_service__["a" /* CommonUtilService */]) === "function" && _f || Object])
 ], HomePage);
 
+var _a, _b, _c, _d, _e, _f;
 //# sourceMappingURL=home.js.map
 
 /***/ }),
@@ -221,8 +236,8 @@ ContentPage = __decorate([
             __WEBPACK_IMPORTED_MODULE_4__services_spinner_service__["a" /* SpinnerService */]
         ]
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */],
         __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */],
         __WEBPACK_IMPORTED_MODULE_3__content_service__["a" /* ContentPageService */],
         __WEBPACK_IMPORTED_MODULE_4__services_spinner_service__["a" /* SpinnerService */]])
@@ -269,7 +284,7 @@ var SpinnerService = (function () {
 }());
 SpinnerService = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* LoadingController */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */]])
 ], SpinnerService);
 
 //# sourceMappingURL=spinner-service.js.map
@@ -324,7 +339,7 @@ ListPage = ListPage_1 = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
         selector: 'page-list',template:/*ion-inline-start:"/Users/AndrewPang/git/News-Recommendation-Frontend/NewsRecommendation/src/pages/list/list.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>List</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">\n      <ion-icon [name]="item.icon" item-start></ion-icon>\n      {{item.title}}\n      <div class="item-note" item-end>\n        {{item.note}}\n      </div>\n    </button>\n  </ion-list>\n  <div *ngIf="selectedItem" padding>\n    You navigated here from <b>{{selectedItem.title}}</b>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/AndrewPang/git/News-Recommendation-Frontend/NewsRecommendation/src/pages/list/list.html"*/
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]])
 ], ListPage);
 
 var ListPage_1;
@@ -385,7 +400,7 @@ SignUpLoginPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"/Users/AndrewPang/git/News-Recommendation-Frontend/NewsRecommendation/src/pages/signup_login/signup_login.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n  </ion-navbar>\n</ion-header>\n\n<ion-content id="signup_login">\n  <div class="outer-container">\n    <div class="inner-container">\n      <div>\n        <ion-segment [(ngModel)]="auth_select">\n          <ion-segment-button value="sign_up">\n            Sign Up\n          </ion-segment-button>\n          <ion-segment-button value="login">\n            Login\n          </ion-segment-button>\n        </ion-segment>\n      </div>\n\n      <!-- showing up signup/login div -->\n      <div [ngSwitch]="auth_select">\n        <!-- login div -->\n        <div *ngSwitchCase="\'login\'">\n          <div *ngIf="displayInputBox" class="input"><ion-input style="width: 250px;" max=20 type="email" placeholder="Email" [(ngModel)]="email"></ion-input></div>\n          <div *ngIf="displayInputBox" class="input"><ion-input style="width: 250px;" max=20 type="password" placeholder="Password" [(ngModel)]="password"></ion-input></div>\n          <div>\n            <button ionic-button (click)="login()">\n              Login\n            </button>\n          </div>\n        </div>\n        <!-- signup div -->\n        <div *ngSwitchCase="\'sign_up\'" class="input-container">\n        </div>\n      </div>\n    </div>\n  </div>\n  <p>Photo by Aleksandrs Tihonovs</p>\n</ion-content>\n'/*ion-inline-end:"/Users/AndrewPang/git/News-Recommendation-Frontend/NewsRecommendation/src/pages/signup_login/signup_login.html"*/,
         providers: [__WEBPACK_IMPORTED_MODULE_3__providers_auth_service__["a" /* AuthService */]]
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */], __WEBPACK_IMPORTED_MODULE_3__providers_auth_service__["a" /* AuthService */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */], __WEBPACK_IMPORTED_MODULE_3__providers_auth_service__["a" /* AuthService */]])
 ], SignUpLoginPage);
 
 //# sourceMappingURL=signup_login.js.map
@@ -470,7 +485,7 @@ AppModule = __decorate([
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
-            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["c" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_11__app_component__["a" /* MyApp */], {}, {
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_11__app_component__["a" /* MyApp */], {}, {
                 links: []
             }),
             __WEBPACK_IMPORTED_MODULE_7_angularfire2__["a" /* AngularFireModule */].initializeApp(__WEBPACK_IMPORTED_MODULE_10__environment__["a" /* firebaseConfig */], 'news-recommendation'),
@@ -486,7 +501,7 @@ AppModule = __decorate([
                 }
             }),
         ],
-        bootstrap: [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["a" /* IonicApp */]],
+        bootstrap: [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["b" /* IonicApp */]],
         entryComponents: [
             __WEBPACK_IMPORTED_MODULE_11__app_component__["a" /* MyApp */],
             __WEBPACK_IMPORTED_MODULE_12__pages_home_home__["a" /* HomePage */],
@@ -497,7 +512,7 @@ AppModule = __decorate([
         providers: [
             __WEBPACK_IMPORTED_MODULE_16__ionic_native_status_bar__["a" /* StatusBar */],
             __WEBPACK_IMPORTED_MODULE_17__ionic_native_splash_screen__["a" /* SplashScreen */],
-            { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["v" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["b" /* IonicErrorHandler */] }
+            { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["v" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["c" /* IonicErrorHandler */] }
         ]
     })
 ], AppModule);
@@ -592,13 +607,13 @@ var MyApp = (function () {
     return MyApp;
 }());
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_13" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* Nav */]),
-    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* Nav */])
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_13" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Nav */]),
+    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Nav */])
 ], MyApp.prototype, "nav", void 0);
 MyApp = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"/Users/AndrewPang/git/News-Recommendation-Frontend/NewsRecommendation/src/app/app.html"*/'<ion-menu [content]="content">\n  <ion-header>\n    <ion-toolbar>\n      <ion-title>Menu</ion-title>\n    </ion-toolbar>\n  </ion-header>\n\n  <ion-content>\n    <ion-list>\n      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">\n        {{p.title}}\n      </button>\n    </ion-list>\n  </ion-content>\n\n</ion-menu>\n\n<!-- Disable swipe-to-go-back because it\'s poor UX to combine STGB with side menus -->\n<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>\n'/*ion-inline-end:"/Users/AndrewPang/git/News-Recommendation-Frontend/NewsRecommendation/src/app/app.html"*/
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* Platform */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Platform */],
         __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */],
         __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */],
         __WEBPACK_IMPORTED_MODULE_4__ngx_translate_core__["c" /* TranslateService */]])
@@ -816,6 +831,56 @@ AuthService = __decorate([
 ], AuthService);
 
 //# sourceMappingURL=auth.service.js.map
+
+/***/ }),
+
+/***/ 462:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CommonUtilService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ngx_translate_core__ = __webpack_require__(236);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var CommonUtilService = (function () {
+    function CommonUtilService(alertCtrl, translate) {
+        this.alertCtrl = alertCtrl;
+        this.translate = translate;
+    }
+    CommonUtilService.prototype.customizePopup = function (event, navCtrl, textTitle, textSubtitle) {
+        var alert = this.alertCtrl.create({
+            title: textTitle,
+            subTitle: textSubtitle,
+            buttons: [{
+                    text: this.translate.instant('COMMON_OK'),
+                    handler: function () {
+                        console.log("Popup dismissed.");
+                    }
+                }]
+        });
+        alert.present();
+    };
+    return CommonUtilService;
+}());
+CommonUtilService = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__ngx_translate_core__["c" /* TranslateService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ngx_translate_core__["c" /* TranslateService */]) === "function" && _b || Object])
+], CommonUtilService);
+
+var _a, _b;
+//# sourceMappingURL=common-util-service.js.map
 
 /***/ })
 
