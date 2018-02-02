@@ -24,6 +24,8 @@ export class HomePage {
   //user = {};
   //displayInputBox: boolean = true;
   movies: any;
+  current_page: any = 1;
+  total_pages: any;
 
   // Get the elements in the Global var User
   //private email: any = User.email;
@@ -33,7 +35,7 @@ export class HomePage {
     // 'BBC/articles' is the name of the list in Firebase Realtime Database
     // this.newsFromBrand = db.list('BBC/articles').valueChanges();
     // Get Now Playing Movies data
-    this.homePageService.getNowPlayingMovies()
+    this.homePageService.getNowPlayingMovies(this.current_page)
       .then((result: any) => {
 
         for (let i = 0; i < result.results.length; i++) {
@@ -41,7 +43,8 @@ export class HomePage {
         }
 
         this.movies = result.results;
-        console.log(this.movies)
+        this.total_pages = result.total_pages;
+        // console.log(this.movies)
 
       })
       .catch((error: any) => {
@@ -57,6 +60,33 @@ export class HomePage {
       item: item
     });
   }
+
+  doInfinite(): Promise<any> {
+    console.log('Begin async operation');
+
+    return new Promise((resolve) => {
+      if (this.current_page < this.total_pages) {
+        // Increase requested page by 1
+        this.current_page++;
+
+        this.homePageService.getNowPlayingMovies(this.current_page)
+          .then((result: any) => {
+
+            for (let i = 0; i < result.results.length; i++) {
+              result.results[i].poster_path = `https://image.tmdb.org/t/p/w500${result.results[i].poster_path}`
+            }
+
+            // Add later contents into the original array
+            this.movies = this.movies.concat(result.results);
+            resolve();
+          });
+      } else {
+        // Finish the infinite scroll otherwise
+        resolve();
+      }
+    })
+  }
+
   /*
   signup() {
     this.authService.signup(this.email, this.password);

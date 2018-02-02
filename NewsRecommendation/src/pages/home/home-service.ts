@@ -23,16 +23,16 @@ export class HomePageService {
     });
   }
 
-  sendNowPlayingMoviesRequest() {
-    return this.http.get(`${this.basePath}movie/now_playing?api_key=${this.APIKey}&language=en-US&page=1`
+  sendNowPlayingMoviesRequest(page) {
+    return this.http.get(`${this.basePath}movie/now_playing?api_key=${this.APIKey}&language=en-US&page=${page}`
       , this.setAuthHeader())
       .map(response => response.json());
   }
 
-  getNowPlayingMovies() {
+  getNowPlayingMovies(page) {
     console.log(`ready to do HTTP GET, sendNowPlayingMoviesRequest() called`);
     return new Promise((resolve, reject) => {
-      this.sendNowPlayingMoviesRequest()
+      this.sendNowPlayingMoviesRequest(page)
         .subscribe(
           (result: any) => {
             resolve(result);
