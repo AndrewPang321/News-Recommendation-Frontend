@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../providers/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 // Global vars from JS
 declare var User: any;
@@ -23,7 +24,7 @@ export class SignUpLoginPage {
 
   private auth_select: string;
 
-  constructor(public navCtrl: NavController, public db: AngularFireDatabase, public authService: AuthService) {
+  constructor(public navCtrl: NavController, public db: AngularFireDatabase, public authService: AuthService, private translate: TranslateService) {
     this.auth_select = "login";
   }
 

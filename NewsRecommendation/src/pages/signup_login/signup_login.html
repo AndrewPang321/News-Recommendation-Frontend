@@ -12,10 +12,10 @@
       <div>
         <ion-segment [(ngModel)]="auth_select">
           <ion-segment-button value="sign_up">
-            Sign Up
+            {{'SIGN_UP' | translate}}
           </ion-segment-button>
           <ion-segment-button value="login">
-            Login
+            {{'LOGIN' | translate}}
           </ion-segment-button>
         </ion-segment>
       </div>
@@ -28,7 +28,7 @@
           <div *ngIf="displayInputBox" class="input"><ion-input style="width: 250px;" max=20 type="password" placeholder="Password" [(ngModel)]="password"></ion-input></div>
           <div>
             <button ionic-button (click)="login()">
-              Login
+              {{'LOGIN' | translate}}
             </button>
           </div>
         </div>

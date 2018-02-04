@@ -82,7 +82,7 @@ export class HomePage {
       dislikedRef.remove(movie.id.toString());
       // Add clicked movie in the "like" list in DB
       const likedRef = this.db.list(`Users/${User.firebase_user.uid}/like`);
-      likedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids });
+      likedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids, poster_path: movie.poster_path });
     }
   }
 
@@ -100,15 +100,20 @@ export class HomePage {
       likedRef.remove(movie.id.toString());
       // Add clicked movie in the "dislike" list in DB
       const dislikedRef = this.db.list(`Users/${User.firebase_user.uid}/dislike`);
-      dislikedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids });
+      dislikedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids, poster_path: movie.poster_path });
     }
   }
 
-  itemTapped(event, item) {
+  itemTapped(event, movie) {
+    // Save to History in DB if login
+    if (User.email != null && User.password != null && User.firebase_user != null) {
+      const historyRef = this.db.list(`Users/${User.firebase_user.uid}/history`);
+      historyRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids, poster_path: movie.poster_path });
+    }
     // Push to content page
     console.log("Movie clicked!");
     this.navCtrl.push(ContentPage, {
-      item: item
+      item: movie
     });
   }
 
