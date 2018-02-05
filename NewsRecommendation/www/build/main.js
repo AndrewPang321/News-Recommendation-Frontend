@@ -24,7 +24,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-// import { EscapeHtmlPipe } from '../../pipes/keep-html.pipe';
 var ContentPage = (function () {
     function ContentPage(navCtrl, navParams, db, contentPageService, spinnerService) {
         var _this = this;
@@ -61,6 +60,19 @@ var ContentPage = (function () {
         // console.log(JSON.stringify(this.news));
         // console.log(this.news.text);
     }
+    ContentPage.prototype.ionViewWillEnter = function () {
+        this.startTime = new Date().getTime();
+    };
+    ContentPage.prototype.ionViewWillLeave = function () {
+        this.endTime = new Date().getTime();
+        // Unit of timeSession is milliseconds
+        var timeSession = this.endTime - this.startTime;
+        console.log("time sessioni: " + timeSession + " ms");
+        if (User.email != null && User.password != null && User.firebase_user != null && this.movie.id != null) {
+            var historyRef = this.db.list("Users/" + User.firebase_user.uid + "/history");
+            historyRef.update(this.movie.id.toString(), { activeTime: timeSession });
+        }
+    };
     return ContentPage;
 }());
 ContentPage = __decorate([
@@ -71,13 +83,10 @@ ContentPage = __decorate([
             __WEBPACK_IMPORTED_MODULE_4__services_spinner_service__["a" /* SpinnerService */]
         ]
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */],
-        __WEBPACK_IMPORTED_MODULE_3__content_service__["a" /* ContentPageService */],
-        __WEBPACK_IMPORTED_MODULE_4__services_spinner_service__["a" /* SpinnerService */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__content_service__["a" /* ContentPageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__content_service__["a" /* ContentPageService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__services_spinner_service__["a" /* SpinnerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_spinner_service__["a" /* SpinnerService */]) === "function" && _e || Object])
 ], ContentPage);
 
+var _a, _b, _c, _d, _e;
 //# sourceMappingURL=content.js.map
 
 /***/ }),
