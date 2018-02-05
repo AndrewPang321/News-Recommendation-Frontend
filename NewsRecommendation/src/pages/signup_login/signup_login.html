@@ -8,8 +8,8 @@
 
 <ion-content id="signup_login">
   <div class="outer-container">
-    <div class="inner-container">
-      <div>
+    <div class="inner-container" ng-hide="authorized">
+      <div style="padding-bottom: 15px;">
         <ion-segment [(ngModel)]="auth_select">
           <ion-segment-button value="sign_up">
             Sign Up
@@ -24,19 +24,37 @@
       <div [ngSwitch]="auth_select">
         <!-- login div -->
         <div *ngSwitchCase="'login'">
-          <div *ngIf="displayInputBox" class="input"><ion-input style="width: 250px;" max=20 type="email" placeholder="Email" [(ngModel)]="email"></ion-input></div>
-          <div *ngIf="displayInputBox" class="input"><ion-input style="width: 250px;" max=20 type="password" placeholder="Password" [(ngModel)]="password"></ion-input></div>
-          <div>
-            <button ionic-button (click)="login()">
-              Login
-            </button>
-          </div>
+          <ul class="form-container">
+            <li class="list-format"><div><ion-input class="input" max=20 type="email" placeholder="Email" [(ngModel)]="email"></ion-input></div></li>
+            <li class="list-format"><div><ion-input class="input" max=20 type="password" placeholder="Password" [(ngModel)]="password"></ion-input></div></li>
+            <li>
+              <div>
+                <button ion-button (click)="login()">
+                  Login
+                </button>
+              </div>
+            </li>
+          </ul>
+          <a>Forgot your password?</a>
         </div>
         <!-- signup div -->
         <div *ngSwitchCase="'sign_up'" class="input-container">
+          <ul class="form-container">
+            <li class="list-format"><div><ion-input class="input" max=20 placeholder="User Name" [(ngModel)]="user_name"></ion-input></div></li>
+            <li class="list-format"><div><ion-input class="input" max=20 type="email" placeholder="Email" [(ngModel)]="email"></ion-input></div></li>
+            <li class="list-format"><div><ion-input class="input" max=20 type="password" placeholder="Password" [(ngModel)]="password"></ion-input></div></li>
+            <li class="list-format"><div><ion-input class="input" max=20 type="password" placeholder="Confirm Password" [(ngModel)]="confirm_password"></ion-input></div></li>
+            <li>
+              <div>
+                <button ion-button (click)="signup()">
+                  Sign Up
+                </button>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
-  </div>
   <p>Photo by Aleksandrs Tihonovs</p>
+  </div>
 </ion-content>

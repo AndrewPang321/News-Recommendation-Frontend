@@ -33,7 +33,8 @@ export class MyApp {
     this.pages = [
       { title: 'Home', component: HomePage },
       { title: 'List', component: ListPage },
-      { title: 'Sign Up/Login', component: SignUpLoginPage }
+      { title: 'Sign Up/Login', component: SignUpLoginPage },
+      { title: 'Log Out', component: null}
     ];
 
   }
@@ -50,6 +51,7 @@ export class MyApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
+
     this.nav.setRoot(page.component);
   }
 }

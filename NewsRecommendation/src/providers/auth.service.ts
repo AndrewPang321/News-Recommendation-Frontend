@@ -8,30 +8,28 @@ import { Observable } from 'rxjs/Observable';
 export class AuthService {
   user: Observable<firebase.User>;
 
+  Authorized: boolean = false;
+
   constructor(private db: AngularFireDatabase, private firebaseAuth: AngularFireAuth) {
     this.user = firebaseAuth.authState;
   }
 
-  signup(newEmail: string, newPassword: string) {
-    this.firebaseAuth
-      .auth
-      .createUserWithEmailAndPassword(newEmail, newPassword)
-      // .createUserWithEmailAndPassword("csiuab@ust.hk", "csiuab")
-      .then( newUser => {
-        this.db.object(`Users/${newUser.uid}`).set({ email: `${newEmail}`});
-        // firebase
-        // .database()
-        // .ref('Users')
-        // .child(newUser.uid)
-        // // .set({ email: "csiuab@ust.hk" });
-        // .set({ email: `${newEmail}` });
+  signup(newEmail: string, newUserName: string, newPassword: string) {
+    return new Promise((resolve, reject) => {
+      this.firebaseAuth
+        .auth
+        .createUserWithEmailAndPassword(newEmail, newPassword)
+        .then( newUser => {
+          this.db.object(`Users/${newUser.uid}`).set({ email: `${newEmail}`}, { userName: `${newUserName}`});
         })
-      .then(value => {
-        console.log('Success!', value);
-      })
-      .catch(err => {
-        console.log('Something went wrong:', err.message);
-      });
+        .then(function(firebaseUser) {
+          resolve("success");
+        })
+        .catch(function(error) {
+          console.log('Something went wrong:', error);
+          reject(error.message);
+        });
+    })
   }
 
   login(email: string, password: string) {
@@ -40,26 +38,22 @@ export class AuthService {
       .auth
       .signInWithEmailAndPassword(email, password)
       .then(function(firebaseUser) {
-        resolve("true");
-        // return new Promise(function(resolve, reject) {
-        //   resolve("true");
-        //   // reject('some fail stuff');
-        // });
+        resolve("success");
       })
       .catch(function(error) {
         if (error.code === 'auth/wrong-password') {
-          alert('Wrong password.');
+          reject("Wrong password");
         }
         else {
-          alert(error.message);
+          reject(error.message);
         }
         console.log(error);
-        reject("false");
+        //reject("false");
           // return new Promise(function(resolve, reject) {
           //   // resolve("false");
           //   reject('some fail stuff');
           // });
-        });
+      });
     })
   }
 
