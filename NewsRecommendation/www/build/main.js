@@ -83,10 +83,13 @@ ContentPage = __decorate([
             __WEBPACK_IMPORTED_MODULE_4__services_spinner_service__["a" /* SpinnerService */]
         ]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__content_service__["a" /* ContentPageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__content_service__["a" /* ContentPageService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__services_spinner_service__["a" /* SpinnerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_spinner_service__["a" /* SpinnerService */]) === "function" && _e || Object])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */],
+        __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */],
+        __WEBPACK_IMPORTED_MODULE_3__content_service__["a" /* ContentPageService */],
+        __WEBPACK_IMPORTED_MODULE_4__services_spinner_service__["a" /* SpinnerService */]])
 ], ContentPage);
 
-var _a, _b, _c, _d, _e;
 //# sourceMappingURL=content.js.map
 
 /***/ }),
@@ -205,9 +208,10 @@ var HomePage = (function () {
     // Get the elements in the Global var User
     //private email: any = User.email;
     //private password: any = User.password;
-    function HomePage(navCtrl, db, translate, homePageService, spinnerService, commonUtilService) {
+    function HomePage(navCtrl, toastCtrl, db, translate, homePageService, spinnerService, commonUtilService) {
         var _this = this;
         this.navCtrl = navCtrl;
+        this.toastCtrl = toastCtrl;
         this.db = db;
         this.translate = translate;
         this.homePageService = homePageService;
@@ -239,6 +243,8 @@ var HomePage = (function () {
             this.commonUtilService.customizePopup(event, this.navCtrl, this.translate.instant("NOT_LOGIN"), this.translate.instant("NOT_LOGIN_SUBTITLE"));
         }
         else {
+            // Present toast
+            this.presentToast("Liked " + movie.title);
             // Delete clicked movie in the "dislike" list in DB
             var dislikedRef = this.db.list("Users/" + User.firebase_user.uid + "/dislike");
             dislikedRef.remove(movie.id.toString());
@@ -252,6 +258,8 @@ var HomePage = (function () {
             this.commonUtilService.customizePopup(event, this.navCtrl, this.translate.instant("NOT_LOGIN"), this.translate.instant("NOT_LOGIN_SUBTITLE"));
         }
         else {
+            // Present toast
+            this.presentToast("Disliked " + movie.title);
             // Delete clicked movie in the "like" list in DB
             var likedRef = this.db.list("Users/" + User.firebase_user.uid + "/like");
             likedRef.remove(movie.id.toString());
@@ -259,6 +267,17 @@ var HomePage = (function () {
             var dislikedRef = this.db.list("Users/" + User.firebase_user.uid + "/dislike");
             dislikedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids, poster_path: movie.poster_path });
         }
+    };
+    HomePage.prototype.presentToast = function (msg) {
+        var toast = this.toastCtrl.create({
+            message: "" + msg,
+            duration: 2000,
+            position: 'bottom'
+        });
+        toast.onDidDismiss(function () {
+            console.log('Dismissed toast');
+        });
+        toast.present();
     };
     HomePage.prototype.itemTapped = function (event, movie) {
         // Save to History in DB if login
@@ -305,14 +324,10 @@ HomePage = __decorate([
             __WEBPACK_IMPORTED_MODULE_7__services_common_util_service__["a" /* CommonUtilService */]
         ]
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */],
-        __WEBPACK_IMPORTED_MODULE_3__ngx_translate_core__["c" /* TranslateService */],
-        __WEBPACK_IMPORTED_MODULE_5__home_service__["a" /* HomePageService */],
-        __WEBPACK_IMPORTED_MODULE_6__services_spinner_service__["a" /* SpinnerService */],
-        __WEBPACK_IMPORTED_MODULE_7__services_common_util_service__["a" /* CommonUtilService */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* ToastController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ngx_translate_core__["c" /* TranslateService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ngx_translate_core__["c" /* TranslateService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5__home_service__["a" /* HomePageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__home_service__["a" /* HomePageService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_6__services_spinner_service__["a" /* SpinnerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_spinner_service__["a" /* SpinnerService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_7__services_common_util_service__["a" /* CommonUtilService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__services_common_util_service__["a" /* CommonUtilService */]) === "function" && _g || Object])
 ], HomePage);
 
+var _a, _b, _c, _d, _e, _f, _g;
 //# sourceMappingURL=home.js.map
 
 /***/ }),

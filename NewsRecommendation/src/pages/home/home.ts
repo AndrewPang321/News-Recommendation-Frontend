@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ToastController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { TranslateService } from '@ngx-translate/core';
@@ -38,6 +38,7 @@ export class HomePage {
 
   constructor(
     public navCtrl: NavController,
+    private toastCtrl: ToastController,
     public db: AngularFireDatabase,
     private translate: TranslateService,
     public homePageService: HomePageService,
@@ -77,6 +78,8 @@ export class HomePage {
         this.translate.instant("NOT_LOGIN_SUBTITLE")
       );
     } else {
+      // Present toast
+      this.presentToast(`Liked ${movie.title}`);
       // Delete clicked movie in the "dislike" list in DB
       const dislikedRef = this.db.list(`Users/${User.firebase_user.uid}/dislike`);
       dislikedRef.remove(movie.id.toString());
@@ -95,6 +98,8 @@ export class HomePage {
         this.translate.instant("NOT_LOGIN_SUBTITLE")
       );
     } else {
+      // Present toast
+      this.presentToast(`Disliked ${movie.title}`);
       // Delete clicked movie in the "like" list in DB
       const likedRef = this.db.list(`Users/${User.firebase_user.uid}/like`);
       likedRef.remove(movie.id.toString());
@@ -102,6 +107,20 @@ export class HomePage {
       const dislikedRef = this.db.list(`Users/${User.firebase_user.uid}/dislike`);
       dislikedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids, poster_path: movie.poster_path });
     }
+  }
+
+  presentToast(msg) {
+    let toast = this.toastCtrl.create({
+      message: `${msg}`,
+      duration: 2000,
+      position: 'bottom'
+    });
+  
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+  
+    toast.present();
   }
 
   itemTapped(event, movie) {
