@@ -9,7 +9,6 @@ import { LoadingController } from 'ionic-angular';
 
 // Global vars from JS
 declare var User: any;
-//declare var Unauthorized: boolean = true;
 
 @Component({
   templateUrl: 'signup_login.html',
@@ -19,19 +18,19 @@ export class SignUpLoginPage {
 
   newsFromBrand: Observable<any[]>;
 
-  private authorized: boolean = AuthService.Authorized;
+  //private authorized: boolean = AuthService.Authorized;
 
   // Get the elements in the Global var User
-  private email: any = User.email;
-  private password: any = User.password;
-  private confirm_password: any = User.confirm_password;
-  private user_name: any = User.user_name;
+  private email: string = User.email;
+  private password: string = User.password;
+  private confirm_password: string;
+  private user_name: string;
 
   private auth_select: string;
 
   constructor(public navCtrl: NavController, public db: AngularFireDatabase, public authService: AuthService, public loadingCtrl: LoadingController, public alertCtrl: AlertController) {
     this.auth_select = "login";
-    console.log(this.authorized);
+    console.log(User.userName);
   }
 
   signup() {
@@ -41,7 +40,7 @@ export class SignUpLoginPage {
         console.log(result);
         let loader = this.loadingCtrl.create({
           content: "Signing up...",
-          duration: 1500
+          duration: 2000
         });
         loader.present();
         let alert = this.alertCtrl.create({
@@ -60,6 +59,14 @@ export class SignUpLoginPage {
         alert.present();
       });
     }
+    else {
+      let alert = this.alertCtrl.create({
+      title: 'Sign Up Failed',
+      subTitle: 'The confirm password should be the same as your passowrd',
+      buttons: ['OK']
+      });
+      alert.present();
+    }
   }
 
   login() {
@@ -71,9 +78,7 @@ export class SignUpLoginPage {
           duration: 1000
         });
         loader.present();
-        console.log(this.authorized);
-        this.authorized = true;
-        console.log(this.authorized);
+        //this.authorized = true;
       })
       .catch((error: any) => {
         console.log(error);

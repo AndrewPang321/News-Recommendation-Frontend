@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 export class AuthService {
   user: Observable<firebase.User>;
 
-  Authorized: boolean = false;
+  //Authorized: boolean = false;
 
   constructor(private db: AngularFireDatabase, private firebaseAuth: AngularFireAuth) {
     this.user = firebaseAuth.authState;
@@ -20,7 +20,7 @@ export class AuthService {
         .auth
         .createUserWithEmailAndPassword(newEmail, newPassword)
         .then( newUser => {
-          this.db.object(`Users/${newUser.uid}`).set({ email: `${newEmail}`}, { userName: `${newUserName}`});
+          this.db.object(`Users/${newUser.uid}`).set({ email: `${newEmail}`, userName: `${newUserName}`});
         })
         .then(function(firebaseUser) {
           resolve("success");

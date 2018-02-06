@@ -25727,6 +25727,10 @@ img.resize {
   padding: 5px;
 }
 
+.text-input {
+  margin: 0;
+}
+
 div > p {
   margin: 0;
   position: absolute;
