@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{'History' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="isLogin">
+    <button ion-item *ngFor="let movie of history | async" (click)="itemTapped($event, movie)">
+      <ion-label>{{movie.title}}</ion-label>
+    </button>
+  </ion-list>
+
+  <ion-list *ngIf="!isLogin">
+    <ion-item>
+      <ion-label>{{'NOT_LOGIN_HISTORY' | translate}}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,4 +1,21 @@
 {
     "Home": "Home",
-    "Content": "Content"
+    "Content": "Content",
+    "COMMON_OK": "OK",
+    "NOT_LOGIN": "Not Yet Login!",
+    "NOT_LOGIN_SUBTITLE": "Please login to use like and dislike functions.",
+    "History": "History",
+    "NOT_LOGIN_HISTORY": "Please login to access your history.",
+    "RELEASE_DATE": "Release Date",
+    "RUNTIME": "Runtime",
+    "MINUTE": "mins",
+    "LANGUAGES": "Languages",
+    "ADULT": "Adult",
+    "ADULT_ONLY": "adult-only",
+    "GENRES": "Genres",
+    "RATING": "Rating",
+    "OVERVIEW": "Overview",
+    "SIGN_UP": "Sign Up",
+    "LOGIN": "Login",
+    "SIGN_UP_LOGIN": "Sign Up/Login"
 }

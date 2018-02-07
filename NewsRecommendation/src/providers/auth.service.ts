@@ -4,6 +4,9 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs/Observable';
 
+// Global vars from JS
+declare var User: any;
+
 @Injectable()
 export class AuthService {
   user: Observable<firebase.User>;
@@ -22,6 +25,9 @@ export class AuthService {
         .createUserWithEmailAndPassword(newEmail, newPassword)
         .then( newUser => {
           this.db.object(`Users/${newUser.uid}`).set({ email: `${newEmail}`, userName: `${newUserName}`});
+          User.email = newEmail;
+          User.password = newPassword;
+          User.firebase_user = newUser;
         })
         .then(function(firebaseUser) {
           resolve("success");
@@ -40,6 +46,9 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then(function(firebaseUser) {
         resolve("success");
+        User.email = email;
+        User.password = password;
+        User.firebase_user = firebaseUser;
       })
       .catch(function(error) {
         if (error.code === 'auth/wrong-password') {
@@ -49,11 +58,7 @@ export class AuthService {
           reject(error.message);
         }
         console.log(error);
-        //reject("false");
-          // return new Promise(function(resolve, reject) {
-          //   // resolve("false");
-          //   reject('some fail stuff');
-          // });
+        reject("false");
       });
     })
   }

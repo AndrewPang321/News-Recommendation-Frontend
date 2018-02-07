@@ -12,10 +12,10 @@
       <div style="padding-bottom: 15px;">
         <ion-segment [(ngModel)]="auth_select">
           <ion-segment-button value="sign_up">
-            Sign Up
+            {{'SIGN_UP' | translate}}
           </ion-segment-button>
           <ion-segment-button value="login">
-            Login
+            {{'LOGIN' | translate}}
           </ion-segment-button>
         </ion-segment>
       </div>
@@ -30,7 +30,7 @@
             <li>
               <div>
                 <button ion-button (click)="login()">
-                  Login
+                  {{'LOGIN' | translate}}
                 </button>
               </div>
             </li>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../providers/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 import { NavController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
@@ -28,7 +29,7 @@ export class SignUpLoginPage {
 
   private auth_select: string;
 
-  constructor(public navCtrl: NavController, public db: AngularFireDatabase, public authService: AuthService, public loadingCtrl: LoadingController, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public db: AngularFireDatabase, public authService: AuthService, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private translate: TranslateService) {
     this.auth_select = "login";
     console.log(this.userName);
     console.log(this.email);
