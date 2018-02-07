@@ -24,13 +24,15 @@ export class SignUpLoginPage {
   private email: string = User.email;
   private password: string = User.password;
   private confirm_password: string;
-  private user_name: string;
+  private user_name: string = User.userName;
 
   private auth_select: string;
 
   constructor(public navCtrl: NavController, public db: AngularFireDatabase, public authService: AuthService, public loadingCtrl: LoadingController, public alertCtrl: AlertController) {
     this.auth_select = "login";
-    console.log(User.userName);
+    console.log(this.userName);
+    console.log(this.email);
+    console.log(this.password);
   }
 
   signup() {

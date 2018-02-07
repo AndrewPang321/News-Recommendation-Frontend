@@ -271,8 +271,11 @@ var SignUpLoginPage = (function () {
         // Get the elements in the Global var User
         this.email = User.email;
         this.password = User.password;
+        this.user_name = User.userName;
         this.auth_select = "login";
-        console.log(User.userName);
+        console.log(this.userName);
+        console.log(this.email);
+        console.log(this.password);
     }
     SignUpLoginPage.prototype.signup = function () {
         var _this = this;
@@ -710,6 +713,7 @@ var AuthService = (function () {
         this.db = db;
         this.firebaseAuth = firebaseAuth;
         this.user = firebaseAuth.authState;
+        console.log(this.user);
     }
     AuthService.prototype.signup = function (newEmail, newUserName, newPassword) {
         var _this = this;
