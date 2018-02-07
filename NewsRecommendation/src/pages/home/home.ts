@@ -70,7 +70,7 @@ export class HomePage {
   }
 
   like(event, movie) {
-    if (User.email === null || User.password === null || User.firebase_user === null) {
+    if (User.email === null || User.firebase_user === null) {
       this.commonUtilService.customizePopup(
         event, 
         this.navCtrl,
@@ -81,16 +81,16 @@ export class HomePage {
       // Present toast
       this.presentToast(`Liked ${movie.title}`);
       // Delete clicked movie in the "dislike" list in DB
-      const dislikedRef = this.db.list(`Users/${User.firebase_user.uid}/dislike`);
+      const dislikedRef = this.db.list(`Users/${User.firebase_user.uid}/movie/dislike`);
       dislikedRef.remove(movie.id.toString());
       // Add clicked movie in the "like" list in DB
-      const likedRef = this.db.list(`Users/${User.firebase_user.uid}/like`);
+      const likedRef = this.db.list(`Users/${User.firebase_user.uid}/movie/like`);
       likedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids, poster_path: movie.poster_path });
     }
   }
 
   dislike(event, movie) {
-    if (User.email === null || User.password === null || User.firebase_user === null) {
+    if (User.email === null || User.firebase_user === null) {
       this.commonUtilService.customizePopup(
         event, 
         this.navCtrl,
@@ -101,10 +101,10 @@ export class HomePage {
       // Present toast
       this.presentToast(`Disliked ${movie.title}`);
       // Delete clicked movie in the "like" list in DB
-      const likedRef = this.db.list(`Users/${User.firebase_user.uid}/like`);
+      const likedRef = this.db.list(`Users/${User.firebase_user.uid}/movie/like`);
       likedRef.remove(movie.id.toString());
       // Add clicked movie in the "dislike" list in DB
-      const dislikedRef = this.db.list(`Users/${User.firebase_user.uid}/dislike`);
+      const dislikedRef = this.db.list(`Users/${User.firebase_user.uid}/movie/dislike`);
       dislikedRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids, poster_path: movie.poster_path });
     }
   }
@@ -125,8 +125,8 @@ export class HomePage {
 
   itemTapped(event, movie) {
     // Save to History in DB if login
-    if (User.email != null && User.password != null && User.firebase_user != null) {
-      const historyRef = this.db.list(`Users/${User.firebase_user.uid}/history`);
+    if (User.email != null && User.firebase_user != null) {
+      const historyRef = this.db.list(`Users/${User.firebase_user.uid}/movie/history`);
       historyRef.set(movie.id.toString(), { id: movie.id, title: movie.title, vote_average: movie.vote_average, genre_ids: movie.genre_ids, poster_path: movie.poster_path });
     }
     // Push to content page

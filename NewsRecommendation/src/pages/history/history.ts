@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { TranslateService } from '@ngx-translate/core';
 
 import { ContentPage } from '../content/content';
+import { NewsContentPage } from '../news-content/news-content';
 import { SpinnerService } from '../services/spinner-service';
 
 // Global vars from JS
@@ -18,8 +19,13 @@ declare var User: any;
 })
 export class HistoryPage {
 
-  history: any;
+  // history: any;
   isLogin: boolean;
+  history: any = {
+    Movie: [],
+    News: [],
+    selectType: "Movie"
+  }
 
   constructor(
     public navCtrl: NavController,
@@ -29,9 +35,10 @@ export class HistoryPage {
   ) {
     this.spinnerService.show();
 
-    if (User.email != null && User.password != null && User.firebase_user != null) {
+    if (User.email != null && User.firebase_user != null) {
       this.isLogin = true;
-      this.history = this.db.list(`Users/${User.firebase_user.uid}/history`).valueChanges();
+      this.history.Movie = this.db.list(`Users/${User.firebase_user.uid}/movie/history`).valueChanges();
+      this.history.News = this.db.list(`Users/${User.firebase_user.uid}/news/history`).valueChanges();
     } else {
       this.isLogin = false;
     }
@@ -39,10 +46,18 @@ export class HistoryPage {
     this.spinnerService.hide();
   }
 
-  itemTapped(event, item) {
+  movieTapped(event, item) {
     // Push to content page
     console.log("Movie in History clicked!");
     this.navCtrl.push(ContentPage, {
+      item: item
+    });
+  }
+
+  newsTapped(event, item) {
+    // Push to news-content page
+    console.log("News in History clicked!");
+    this.navCtrl.push(NewsContentPage, {
       item: item
     });
   }

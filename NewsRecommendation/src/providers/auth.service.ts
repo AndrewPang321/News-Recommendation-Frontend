@@ -23,7 +23,6 @@ export class AuthService {
       .then( newUser => {
         this.db.object(`Users/${newUser.uid}`).set({ email: `${newEmail}`});
         User.email = newEmail;
-        User.password = newPassword;
         User.firebase_user = newUser;
         // console.log(`User.email: ${User.email}`);
         // console.log(`User.pw: ${User.password}`);
@@ -44,7 +43,6 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then(function(firebaseUser) {
         User.email = email;
-        User.password = password;
         User.firebase_user = firebaseUser;
         // console.log(`User.email: ${User.email}`);
         // console.log(`User.pw: ${User.password}`);

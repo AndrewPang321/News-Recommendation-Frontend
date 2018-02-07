@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HomePage } from '../pages/home/home';
 import { SignUpLoginPage } from '../pages/signup_login/signup_login';
 import { HistoryPage } from '../pages/history/history';
+import { NewsPage } from '../pages/news/news';
 
 @Component({
   templateUrl: 'app.html'
@@ -31,7 +32,8 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
+      { title: 'Movie', component: HomePage },
+      { title: 'News', component: NewsPage },
       { title: 'History', component: HistoryPage },
       { title: 'Sign Up/Login', component: SignUpLoginPage }
     ];

@@ -5,13 +5,31 @@
     </button>
     <ion-title>{{'History' | translate}}</ion-title>
   </ion-navbar>
+
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="history.selectType">
+      <ion-segment-button value="Movie">
+        {{'Movie' | translate}}
+      </ion-segment-button>
+      <ion-segment-button value="News">
+        {{'News' | translate}}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list *ngIf="isLogin">
-    <button ion-item *ngFor="let movie of history | async" (click)="itemTapped($event, movie)">
-      <ion-label>{{movie.title}}</ion-label>
-    </button>
+    <div *ngIf="history.selectType == 'Movie'">
+      <button ion-item *ngFor="let movie of history.Movie | async" (click)="movieTapped($event, movie)">
+        <ion-label>{{movie.title}}</ion-label>
+      </button>
+    </div>
+    <div *ngIf="history.selectType == 'News'">
+      <button ion-item *ngFor="let news of history.News | async" (click)="newsTapped($event, news)">
+        <ion-label>{{news.title}}</ion-label>
+      </button>
+    </div>
   </ion-list>
   
   <ion-list *ngIf="!isLogin">

@@ -67,12 +67,6 @@ export class ContentPage {
         this.spinnerService.hide();
         console.log(error);
       });
-
-    // Replace \n to <br /> to display content with formatting in content.html
-    // this.news.text = this.news.text.replace(new RegExp('\n', 'g'), "<br />")
-    
-    // console.log(JSON.stringify(this.news));
-    // console.log(this.news.text);
   }
 
   ionViewWillEnter() {
@@ -85,8 +79,8 @@ export class ContentPage {
     let timeSession = this.endTime - this.startTime;
     console.log(`time sessioni: ${timeSession} ms`);
     
-    if (User.email != null && User.password != null && User.firebase_user != null && this.movie.id != null) {
-      const historyRef = this.db.list(`Users/${User.firebase_user.uid}/history`);
+    if (User.email != null && User.firebase_user != null && this.movie.id != null) {
+      const historyRef = this.db.list(`Users/${User.firebase_user.uid}/movie/history`);
       historyRef.update(this.movie.id.toString(), { activeTime: timeSession });
     }
   }

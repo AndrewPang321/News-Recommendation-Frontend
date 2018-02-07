@@ -16,6 +16,8 @@ import { HomePage } from '../pages/home/home';
 import { ContentPage } from '../pages/content/content';
 import { SignUpLoginPage } from '../pages/signup_login/signup_login';
 import { HistoryPage } from '../pages/history/history';
+import { NewsPage } from '../pages/news/news';
+import { NewsContentPage } from '../pages/news-content/news-content';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -26,7 +28,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     HomePage,
     ContentPage,
     SignUpLoginPage,
-    HistoryPage
+    HistoryPage,
+    NewsPage,
+    NewsContentPage
   ],
   imports: [
     BrowserModule,
@@ -50,7 +54,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     HomePage,
     ContentPage,
     SignUpLoginPage,
-    HistoryPage
+    HistoryPage,
+    NewsPage,
+    NewsContentPage
   ],
   providers: [
     StatusBar,
