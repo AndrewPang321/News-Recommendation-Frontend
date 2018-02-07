@@ -11,11 +11,8 @@ declare var User: any;
 export class AuthService {
   user: Observable<firebase.User>;
 
-  //Authorized: boolean = false;
-
   constructor(private db: AngularFireDatabase, private firebaseAuth: AngularFireAuth) {
-    this.user = firebaseAuth.authState;
-    console.log(this.user);
+    //this.user = firebaseAuth.authState;
   }
 
   signup(newEmail: string, newUserName: string, newPassword: string) {
@@ -26,7 +23,7 @@ export class AuthService {
         .then( newUser => {
           this.db.object(`Users/${newUser.uid}`).set({ email: `${newEmail}`, userName: `${newUserName}`});
           User.email = newEmail;
-          User.password = newPassword;
+          User.user_name = newUserName;
           User.firebase_user = newUser;
         })
         .then(function(firebaseUser) {
@@ -44,11 +41,15 @@ export class AuthService {
       this.firebaseAuth
       .auth
       .signInWithEmailAndPassword(email, password)
-      .then(function(firebaseUser) {
+      .then( firebaseUser => {
         resolve("success");
         User.email = email;
-        User.password = password;
         User.firebase_user = firebaseUser;
+        console.log(User.firebase_user.uid);
+        this.db.object(`Users/${User.firebase_user.uid}/userName`).valueChanges().subscribe(data => {
+          User.user_name = data;
+          console.log(User.user_name);
+        });
       })
       .catch(function(error) {
         if (error.code === 'auth/wrong-password') {
@@ -66,7 +67,13 @@ export class AuthService {
   logout() {
     this.firebaseAuth
       .auth
-      .signOut();
+      .signOut()
+      .then(result => {
+        console.log("success");
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
 }

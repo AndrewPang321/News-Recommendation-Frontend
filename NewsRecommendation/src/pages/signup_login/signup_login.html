@@ -8,7 +8,7 @@
 
 <ion-content id="signup_login">
   <div class="outer-container">
-    <div class="inner-container" ng-hide="authorized">
+    <div class="inner-container" *ngIf="unauthorized">
       <div style="padding-bottom: 15px;">
         <ion-segment [(ngModel)]="auth_select">
           <ion-segment-button value="sign_up">
@@ -47,7 +47,7 @@
             <li>
               <div>
                 <button ion-button (click)="signup()">
-                  Sign Up
+                  {{'Sign Up' | translate}}
                 </button>
               </div>
             </li>

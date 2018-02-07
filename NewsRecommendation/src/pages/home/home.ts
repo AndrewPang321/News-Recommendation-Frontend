@@ -70,7 +70,7 @@ export class HomePage {
   }
 
   like(event, movie) {
-    if (User.email === null || User.password === null || User.firebase_user === null) {
+    if (User.email === null || User.firebase_user === null) {
       this.commonUtilService.customizePopup(
         event,
         this.navCtrl,
@@ -90,7 +90,7 @@ export class HomePage {
   }
 
   dislike(event, movie) {
-    if (User.email === null || User.password === null || User.firebase_user === null) {
+    if (User.email === null || User.firebase_user === null) {
       this.commonUtilService.customizePopup(
         event,
         this.navCtrl,

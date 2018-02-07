@@ -19,21 +19,20 @@ export class SignUpLoginPage {
 
   newsFromBrand: Observable<any[]>;
 
-  //private authorized: boolean = AuthService.Authorized;
+  private unauthorized: boolean = User.unauthorized;
 
   // Get the elements in the Global var User
   private email: string = User.email;
-  private password: string = User.password;
+  private password: string;
   private confirm_password: string;
-  private user_name: string = User.userName;
+  private user_name: string = User.user_name;
 
   private auth_select: string;
 
   constructor(public navCtrl: NavController, public db: AngularFireDatabase, public authService: AuthService, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private translate: TranslateService) {
     this.auth_select = "login";
-    console.log(this.userName);
+    console.log(this.user_name);
     console.log(this.email);
-    console.log(this.password);
   }
 
   signup() {
@@ -52,6 +51,7 @@ export class SignUpLoginPage {
         buttons: ['OK']
         });
         alert.present();
+        this.unauthorized = User.unauthorized = false;
       })
       .catch((error: any) => {
         let alert = this.alertCtrl.create({
@@ -81,7 +81,7 @@ export class SignUpLoginPage {
           duration: 1000
         });
         loader.present();
-        //this.authorized = true;
+        this.unauthorized = User.unauthorized = false;
       })
       .catch((error: any) => {
         console.log(error);

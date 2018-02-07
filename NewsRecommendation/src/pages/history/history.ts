@@ -29,7 +29,7 @@ export class HistoryPage {
   ) {
     this.spinnerService.show();
 
-    if (User.email != null && User.password != null && User.firebase_user != null) {
+    if (User.email != null && User.firebase_user != null) {
       this.isLogin = true;
       this.history = this.db.list(`Users/${User.firebase_user.uid}/history`).valueChanges();
     } else {

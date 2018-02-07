@@ -85,7 +85,7 @@ export class ContentPage {
     let timeSession = this.endTime - this.startTime;
     console.log(`time sessioni: ${timeSession} ms`);
 
-    if (User.email != null && User.password != null && User.firebase_user != null && this.movie.id != null) {
+    if (User.email != null && User.firebase_user != null && this.movie.id != null) {
       const historyRef = this.db.list(`Users/${User.firebase_user.uid}/history`);
       historyRef.update(this.movie.id.toString(), { activeTime: timeSession });
     }
