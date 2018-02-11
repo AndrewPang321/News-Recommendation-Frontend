@@ -3,14 +3,39 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{'Content' | translate}}</ion-title>
+    <ion-title>{{'Movie' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h3>{{news.title}}</h3>
-  <img [src]='news.top_image'/>
-  <br><br>
-  Source: <a [href]="news.url">{{news.url}}</a>
-  <p [innerHTML]="news.text"></p>
+  <h3>{{movie.title}}</h3>
+  <h6 ion-text color="primary">{{tagline}}</h6>
+  <img class="resize" [src]='movie.poster_path'/>
+  <ion-grid>
+    <ion-row>
+      <ion-col>{{'RELEASE_DATE' | translate}}: {{release_date}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>{{'RUNTIME' | translate}}: {{runtime}} {{'MINUTE' | translate}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>{{'LANGUAGES' | translate}}: <ion-badge *ngFor="let lang of spoken_languages">{{lang.name}}</ion-badge></ion-col>
+    </ion-row>
+    <ion-row *ngIf="adult">
+      <ion-col>{{'Adult' | translate}}: <ion-badge color="danger">{{'ADULT_ONLY' | translate}}</ion-badge></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>{{'GENRES' | translate}}: <ion-badge *ngFor="let type of genres">{{type.name}}</ion-badge></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>{{'RATING' | translate}}: <ion-badge>{{vote_average}}</ion-badge></ion-col>
+    </ion-row>
+    <ion-row><ion-col></ion-col></ion-row>
+    <ion-row>
+      <ion-col>{{'OVERVIEW' | translate}}:</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>{{overview}}</ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
