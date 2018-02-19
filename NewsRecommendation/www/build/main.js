@@ -68,7 +68,7 @@ var ContentPage = (function () {
         // Unit of timeSession is milliseconds
         var timeSession = this.endTime - this.startTime;
         console.log("time sessioni: " + timeSession + " ms");
-        if (User.email != null && User.password != null && User.firebase_user != null && this.movie.id != null) {
+        if (User.email != null && User.firebase_user != null && this.movie.id != null) {
             var historyRef = this.db.list("Users/" + User.firebase_user.uid + "/history");
             historyRef.update(this.movie.id.toString(), { activeTime: timeSession });
         }
@@ -262,10 +262,9 @@ var AuthService = (function () {
 }());
 AuthService = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_angularfire2_database__["a" /* AngularFireDatabase */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angularfire2_database__["a" /* AngularFireDatabase */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__["a" /* AngularFireAuth */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__["a" /* AngularFireAuth */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_angularfire2_database__["a" /* AngularFireDatabase */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__["a" /* AngularFireAuth */]])
 ], AuthService);
 
-var _a, _b;
 //# sourceMappingURL=auth.service.js.map
 
 /***/ }),
@@ -506,12 +505,12 @@ var SignUpLoginPage = (function () {
             });
         }
         else {
-            var alert = this.alertCtrl.create({
+            var alert_1 = this.alertCtrl.create({
                 title: 'Sign Up Failed',
                 subTitle: 'The confirm password should be the same as your passowrd',
                 buttons: ['OK']
             });
-            alert.present();
+            alert_1.present();
         }
     };
     SignUpLoginPage.prototype.login = function () {
@@ -542,10 +541,9 @@ SignUpLoginPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"/Users/Jay/Documents/Comp/FYP/News-Recommendation-Frontend/NewsRecommendation/src/pages/signup_login/signup_login.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n  </ion-navbar>\n</ion-header>\n\n<ion-content id="signup_login">\n  <div class="outer-container">\n    <div class="inner-container" *ngIf="unauthorized">\n      <div style="padding-bottom: 15px;">\n        <ion-segment [(ngModel)]="auth_select">\n          <ion-segment-button value="sign_up">\n            {{\'SIGN_UP\' | translate}}\n          </ion-segment-button>\n          <ion-segment-button value="login">\n            {{\'LOGIN\' | translate}}\n          </ion-segment-button>\n        </ion-segment>\n      </div>\n\n      <!-- showing up signup/login div -->\n      <div [ngSwitch]="auth_select">\n        <!-- login div -->\n        <div *ngSwitchCase="\'login\'">\n          <ul class="form-container">\n            <li class="list-format"><div><ion-input class="input" max=20 type="email" placeholder="Email" [(ngModel)]="email"></ion-input></div></li>\n            <li class="list-format"><div><ion-input class="input" max=20 type="password" placeholder="Password" [(ngModel)]="password"></ion-input></div></li>\n            <li>\n              <div>\n                <button ion-button (click)="login()">\n                  {{\'LOGIN\' | translate}}\n                </button>\n              </div>\n            </li>\n          </ul>\n          <a>Forgot your password?</a>\n        </div>\n        <!-- signup div -->\n        <div *ngSwitchCase="\'sign_up\'" class="input-container">\n          <ul class="form-container">\n            <li class="list-format"><div><ion-input class="input" max=20 placeholder="User Name" [(ngModel)]="user_name"></ion-input></div></li>\n            <li class="list-format"><div><ion-input class="input" max=20 type="email" placeholder="Email" [(ngModel)]="email"></ion-input></div></li>\n            <li class="list-format"><div><ion-input class="input" max=20 type="password" placeholder="Password" [(ngModel)]="password"></ion-input></div></li>\n            <li class="list-format"><div><ion-input class="input" max=20 type="password" placeholder="Confirm Password" [(ngModel)]="confirm_password"></ion-input></div></li>\n            <li>\n              <div>\n                <button ion-button (click)="signup()">\n                  {{\'Sign Up\' | translate}}\n                </button>\n              </div>\n            </li>\n          </ul>\n        </div>\n      </div>\n    </div>\n  <p>Photo by Aleksandrs Tihonovs</p>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/Jay/Documents/Comp/FYP/News-Recommendation-Frontend/NewsRecommendation/src/pages/signup_login/signup_login.html"*/,
         providers: [__WEBPACK_IMPORTED_MODULE_2__providers_auth_service__["a" /* AuthService */]]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_angularfire2_database__["a" /* AngularFireDatabase */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angularfire2_database__["a" /* AngularFireDatabase */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_auth_service__["a" /* AuthService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["e" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["e" /* LoadingController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["a" /* AlertController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__ngx_translate_core__["c" /* TranslateService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ngx_translate_core__["c" /* TranslateService */]) === "function" && _f || Object])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_angularfire2_database__["a" /* AngularFireDatabase */], __WEBPACK_IMPORTED_MODULE_2__providers_auth_service__["a" /* AuthService */], __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["e" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_3__ngx_translate_core__["c" /* TranslateService */]])
 ], SignUpLoginPage);
 
-var _a, _b, _c, _d, _e, _f;
 //# sourceMappingURL=signup_login.js.map
 
 /***/ }),
@@ -862,16 +860,19 @@ var MyApp = (function () {
 }());
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_13" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Nav */]),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Nav */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Nav */]) === "function" && _a || Object)
+    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Nav */])
 ], MyApp.prototype, "nav", void 0);
 MyApp = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"/Users/Jay/Documents/Comp/FYP/News-Recommendation-Frontend/NewsRecommendation/src/app/app.html"*/'<ion-menu [content]="content">\n  <ion-header>\n    <ion-toolbar>\n      <ion-title>Menu</ion-title>\n    </ion-toolbar>\n  </ion-header>\n\n  <ion-content>\n    <ion-list>\n      <div *ngFor="let p of pages">\n        <button menuClose ion-item *ngIf="(unauthorizedCheck()&&titleCheck(p.title))||(!unauthorizedCheck() && !profileCheck(p.title)); else (!unauthorizedCheck() && profileCheck(p.title))? profileBlock : otherBlock" (click)="openPage(p)">\n          <ion-icon [name]=getTitle(p.title)></ion-icon> {{p.title}}\n        </button>\n        <ng-template #profileBlock>\n          <button menuClose ion-item (click)="openPage(p)">\n            <ion-icon name="contact"></ion-icon> {{this.user_name}}\n          </button>\n        </ng-template>\n        <ng-template #otherBlock></ng-template>\n      </div>\n    </ion-list>\n  </ion-content>\n\n</ion-menu>\n\n<!-- Disable swipe-to-go-back because it\'s poor UX to combine STGB with side menus -->\n<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>\n'/*ion-inline-end:"/Users/Jay/Documents/Comp/FYP/News-Recommendation-Frontend/NewsRecommendation/src/app/app.html"*/,
         providers: [__WEBPACK_IMPORTED_MODULE_5__providers_auth_service__["a" /* AuthService */]]
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Platform */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Platform */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__ngx_translate_core__["c" /* TranslateService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__ngx_translate_core__["c" /* TranslateService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_5__providers_auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__providers_auth_service__["a" /* AuthService */]) === "function" && _f || Object])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Platform */],
+        __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */],
+        __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */],
+        __WEBPACK_IMPORTED_MODULE_4__ngx_translate_core__["c" /* TranslateService */],
+        __WEBPACK_IMPORTED_MODULE_5__providers_auth_service__["a" /* AuthService */]])
 ], MyApp);
 
-var _a, _b, _c, _d, _e, _f;
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
