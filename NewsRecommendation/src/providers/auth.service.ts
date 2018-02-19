@@ -12,28 +12,28 @@ export class AuthService {
   user: Observable<firebase.User>;
 
   constructor(private db: AngularFireDatabase, private firebaseAuth: AngularFireAuth) {
-    this.user = firebaseAuth.authState;
+    //this.user = firebaseAuth.authState;
   }
 
-  signup(newEmail: string, newPassword: string) {
-    this.firebaseAuth
-      .auth
-      .createUserWithEmailAndPassword(newEmail, newPassword)
-      // .createUserWithEmailAndPassword("csiuab@ust.hk", "csiuab")
-      .then( newUser => {
-        this.db.object(`Users/${newUser.uid}`).set({ email: `${newEmail}`});
-        User.email = newEmail;
-        User.firebase_user = newUser;
-        // console.log(`User.email: ${User.email}`);
-        // console.log(`User.pw: ${User.password}`);
-        // console.log(`User.firebaseUserUid: ${User.firebase_user.uid}`);
-      })
-      .then(value => {
-        console.log('Success!', value);
-      })
-      .catch(err => {
-        console.log('Something went wrong:', err.message);
-      });
+  signup(newEmail: string, newUserName: string, newPassword: string) {
+    return new Promise((resolve, reject) => {
+      this.firebaseAuth
+        .auth
+        .createUserWithEmailAndPassword(newEmail, newPassword)
+        .then( newUser => {
+          this.db.object(`Users/${newUser.uid}`).set({ email: `${newEmail}`, userName: `${newUserName}`});
+          User.email = newEmail;
+          User.user_name = newUserName;
+          User.firebase_user = newUser;
+        })
+        .then(function(firebaseUser) {
+          resolve("success");
+        })
+        .catch(function(error) {
+          console.log('Something went wrong:', error);
+          reject(error.message);
+        });
+    })
   }
 
   login(email: string, password: string) {
@@ -41,20 +41,22 @@ export class AuthService {
       this.firebaseAuth
       .auth
       .signInWithEmailAndPassword(email, password)
-      .then(function(firebaseUser) {
+      .then( firebaseUser => {
+        resolve("success");
         User.email = email;
         User.firebase_user = firebaseUser;
-        // console.log(`User.email: ${User.email}`);
-        // console.log(`User.pw: ${User.password}`);
-        // console.log(`User.firebaseUserUid: ${User.firebase_user.uid}`);
-        resolve("true");
+        console.log(User.firebase_user.uid);
+        this.db.object(`Users/${User.firebase_user.uid}/userName`).valueChanges().subscribe(data => {
+          User.user_name = data;
+          console.log(User.user_name);
+        });
       })
       .catch(function(error) {
         if (error.code === 'auth/wrong-password') {
-          alert('Wrong password.');
+          reject("Wrong password");
         }
         else {
-          alert(error.message);
+          reject(error.message);
         }
         console.log(error);
         reject("false");
@@ -65,7 +67,13 @@ export class AuthService {
   logout() {
     this.firebaseAuth
       .auth
-      .signOut();
+      .signOut()
+      .then(result => {
+        console.log("success");
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
 }

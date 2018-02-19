@@ -1,5 +1,5 @@
 #signup_login {
-  background-image: url(https://d3cbihxaqsuq0s.cloudfront.net/images/17935469_xl.jpg);
+  background-image: url('/assets/imgs/bg_signup_login.jpg');
   background-size: cover;
   opacity: 0.8;
 }
@@ -13,11 +13,42 @@
 
 .inner-container {
   width: 300px;
+  padding: 10px;
   text-align: center;
   background-color: rgba(255,255,255,0.8);
 }
 
 .input {
   display: flex;
-  justify-content: center;
+  background: #fdfdfd;
+  border-radius: 2px;
+  padding: 5px;
+}
+
+.text-input {
+  margin: 0;
+}
+
+div > p {
+  margin: 0;
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+}
+
+.form-container {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.list-format {
+  padding-bottom: 10px;
+  font-size: $font-size;
+}
+
+.ng-hide {
+  height: 0;
+  width: 0;
+  background-color: transparent;
 }

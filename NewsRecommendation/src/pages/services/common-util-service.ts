@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class CommonUtilService {
 
   constructor(private alertCtrl: AlertController, private translate: TranslateService) {
-    
+
   }
 
   customizePopup(event, navCtrl, textTitle, textSubtitle) {

@@ -60,7 +60,7 @@ export class HomePage {
         this.total_pages = result.total_pages;
         this.spinnerService.hide();
         // console.log(this.movies)
-        
+
       })
       .catch((error: any) => {
         this.spinnerService.hide();
@@ -72,7 +72,7 @@ export class HomePage {
   like(event, movie) {
     if (User.email === null || User.firebase_user === null) {
       this.commonUtilService.customizePopup(
-        event, 
+        event,
         this.navCtrl,
         this.translate.instant("NOT_LOGIN"),
         this.translate.instant("NOT_LOGIN_SUBTITLE")
@@ -92,7 +92,7 @@ export class HomePage {
   dislike(event, movie) {
     if (User.email === null || User.firebase_user === null) {
       this.commonUtilService.customizePopup(
-        event, 
+        event,
         this.navCtrl,
         this.translate.instant("NOT_LOGIN"),
         this.translate.instant("NOT_LOGIN_SUBTITLE")
@@ -115,11 +115,11 @@ export class HomePage {
       duration: 2000,
       position: 'bottom'
     });
-  
+
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });
-  
+
     toast.present();
   }
 

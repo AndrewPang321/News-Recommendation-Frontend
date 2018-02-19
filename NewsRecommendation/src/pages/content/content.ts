@@ -43,7 +43,7 @@ export class ContentPage {
     public spinnerService: SpinnerService
   ) {
     this.spinnerService.show();
-    
+
     // Get the item from page navigation from home page
     this.movie = navParams.get('item');
     console.log(this.movie);
@@ -78,7 +78,7 @@ export class ContentPage {
     // Unit of timeSession is milliseconds
     let timeSession = this.endTime - this.startTime;
     console.log(`time sessioni: ${timeSession} ms`);
-    
+
     if (User.email != null && User.firebase_user != null && this.movie.id != null) {
       const historyRef = this.db.list(`Users/${User.firebase_user.uid}/movie/history`);
       historyRef.update(this.movie.id.toString(), { activeTime: timeSession });

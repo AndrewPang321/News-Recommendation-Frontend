@@ -9,7 +9,7 @@ export class HomePageService {
   basePath: string = "https://api.themoviedb.org/3/";
 
   constructor(private http: Http) {
-    
+
   }
 
   // Set HTTP REQUEST header

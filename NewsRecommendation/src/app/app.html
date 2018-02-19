@@ -7,9 +7,17 @@
 
   <ion-content>
     <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
-      </button>
+      <div *ngFor="let p of pages">
+        <button menuClose ion-item *ngIf="(unauthorizedCheck()&&titleCheck(p.title))||(!unauthorizedCheck() && !profileCheck(p.title)); else (!unauthorizedCheck() && profileCheck(p.title))? profileBlock : otherBlock" (click)="openPage(p)">
+          <ion-icon [name]=getTitle(p.title)></ion-icon> {{p.title}}
+        </button>
+        <ng-template #profileBlock>
+          <button menuClose ion-item (click)="openPage(p)">
+            <ion-icon name="contact"></ion-icon> {{this.user_name}}
+          </button>
+        </ng-template>
+        <ng-template #otherBlock></ng-template>
+      </div>
     </ion-list>
   </ion-content>
 
