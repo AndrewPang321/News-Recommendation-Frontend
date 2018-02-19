@@ -1,0 +1,23 @@
+#signup_login {
+  background-image: url(https://d3cbihxaqsuq0s.cloudfront.net/images/17935469_xl.jpg);
+  background-size: cover;
+  opacity: 0.8;
+}
+.outer-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inner-container {
+  width: 300px;
+  text-align: center;
+  background-color: rgba(255,255,255,0.8);
+}
+
+.input {
+  display: flex;
+  justify-content: center;
+}

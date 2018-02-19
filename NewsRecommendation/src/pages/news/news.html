@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{'News' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card *ngFor="let news of newsFromBrand | async">
+    <ion-card-content (click)="itemTapped($event, news)">
+      <img [src]='news.top_image'/>
+      <ion-card-title>
+        {{news.title}}
+      </ion-card-title>
+    </ion-card-content>
+
+    <ion-row no-padding>
+        <ion-col text-center>
+          <button ion-button clear small color="primary" icon-start (click)="like($event, news)">
+            <ion-icon name='thumbs-up'></ion-icon>
+            Like
+          </button>
+        </ion-col>
+        <ion-col text-center>
+          <button ion-button clear small color="danger" icon-start (click)="dislike($event, news)">
+            <ion-icon name='thumbs-down'></ion-icon>
+            Dislike
+          </button>
+        </ion-col>
+      </ion-row>
+  </ion-card>
+   
+</ion-content>

@@ -3,26 +3,43 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{'Home' | translate}}</ion-title> <!-- Use ngx-translate i18n syntax -->
+    <ion-title>{{'Movie' | translate}}</ion-title>
+    <!--
+    <div class="signup_login" *ngIf="displayInputBox"><ion-input max=20 type="password" placeholder="Password" [(ngModel)]="password"></ion-input></div>
+    <div class="signup_login" *ngIf="displayInputBox"><ion-input max=20 type="email" placeholder="Email" [(ngModel)]="email"></ion-input></div>
+    -->
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let news of newsFromBrand | async" (click)="itemTapped($event, news)">
-    <img [src]='news.top_image'/>
-    <ion-card-content>
+
+  <ion-card *ngFor="let movie of movies">
+    <ion-card-content (click)="itemTapped($event, movie)">
+      <img [src]="movie.poster_path"/>
       <ion-card-title>
-        {{news.title}}
+        {{movie.title}}
+        <ion-badge float-end>{{movie.vote_average}}</ion-badge>
       </ion-card-title>
-      <!-- <p>
-        The most popular industrial group ever, and largely
-        responsible for bringing the music to a mass audience.
-      </p> -->
     </ion-card-content>
+
+    <ion-row no-padding>
+      <ion-col text-center>
+        <button ion-button clear small color="primary" icon-start (click)="like($event, movie)">
+          <ion-icon name='thumbs-up'></ion-icon>
+          Like
+        </button>
+      </ion-col>
+      <ion-col text-center>
+        <button ion-button clear small color="danger" icon-start (click)="dislike($event, movie)">
+          <ion-icon name='thumbs-down'></ion-icon>
+          Dislike
+        </button>
+      </ion-col>
+    </ion-row>
   </ion-card>
 
-  <!-- <ion-item *ngFor="let item of newsFromBrand | async">
-    {{item.text}} Display as its original type format
-    {{item | json}} Display as JSON format
-  </ion-item> -->
+  <ion-infinite-scroll (ionInfinite)="$event.waitFor(doInfinite())">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+   
 </ion-content>

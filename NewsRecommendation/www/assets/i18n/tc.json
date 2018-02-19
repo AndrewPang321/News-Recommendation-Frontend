@@ -1,4 +1,23 @@
 {
     "Home": "主頁",
-    "Content": "內容"
+    "News": "新聞",
+    "Movie": "電影",
+    "Content": "內容",
+    "COMMON_OK": "確定",
+    "NOT_LOGIN": "還未登入!",
+    "NOT_LOGIN_SUBTITLE": "請於登入後才使用like和dislike功能。",
+    "History": "紀錄",
+    "NOT_LOGIN_HISTORY": "請於登入後才使用History功能。",
+    "RELEASE_DATE": "發布日期",
+    "RUNTIME": "長度",
+    "MINUTE": "分鐘",
+    "LANGUAGES": "語言",
+    "ADULT": "成人",
+    "ADULT_ONLY": "只限成人",
+    "GENRES": "類型",
+    "RATING": "評分",
+    "OVERVIEW": "概述",
+    "SIGN_UP": "註冊",
+    "LOGIN": "登入",
+    "SIGN_UP_LOGIN": "註冊/登入"
 }
