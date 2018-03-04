@@ -52,7 +52,7 @@ export class MyApp {
       { title: 'Log Out', component: null}
     ];
 
-    this.icons = ["home", "book", "log-in", "exit"];
+    this.icons = ["home", "filing", "log-in", "exit", "videocam", "book"];
   }
 
   initializeApp() {
@@ -104,6 +104,8 @@ export class MyApp {
       case 'History': return this.icons[1];
       case 'Sign Up/Login': return this.icons[2];
       case 'Log Out': return this.icons[3];
+      case 'Movie': return this.icons[4];
+      case 'News': return this.icons[5];
     }
   }
 }
