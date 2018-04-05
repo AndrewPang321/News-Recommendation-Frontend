@@ -10,7 +10,8 @@
 <ion-content padding>
   <h3>{{news.title}}</h3>
   <img [src]='news.top_image'/>
-  <br><br>
+  <br /><br />
   Source: <a [href]="news.url">{{news.url}}</a>
-  <p [innerHTML]="news.text"></p>
+  <br />
+  <p class="clear" [innerHTML]="news.text"></p>
 </ion-content>

@@ -76,4 +76,10 @@ export class AuthService {
       });
   }
 
+  retrieveMovieHistory() {
+    User.movie_history.Dislike = this.db.list(`Users/${User.firebase_user.uid}/movie/dislike`).valueChanges();
+    User.movie_history.History = this.db.list(`Users/${User.firebase_user.uid}/movie/history`).valueChanges();
+    User.movie_history.Like = this.db.list(`Users/${User.firebase_user.uid}/movie/like`).valueChanges();
+  }
+
 }

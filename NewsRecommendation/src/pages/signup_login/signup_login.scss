@@ -1,6 +1,7 @@
 #signup_login {
-  background-image: url('/assets/imgs/bg_signup_login.jpg');
+  background-image: url('../assets/imgs/bg_signup_login.jpg');
   background-size: cover;
+  background-color: transparent !important;
   opacity: 0.8;
 }
 .outer-container {
@@ -45,10 +46,4 @@ div > p {
 .list-format {
   padding-bottom: 10px;
   font-size: $font-size;
-}
-
-.ng-hide {
-  height: 0;
-  width: 0;
-  background-color: transparent;
 }

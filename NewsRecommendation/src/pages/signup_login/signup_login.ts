@@ -9,13 +9,16 @@ import { AlertController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 
 import { HomePage } from '../home/home';
+//import { FirebaseService } from '../services/firebase-service';
 
 // Global vars from JS
 declare var User: any;
 
 @Component({
   templateUrl: 'signup_login.html',
-  providers: [AuthService]
+  providers: [
+    AuthService
+  ]
 })
 export class SignUpLoginPage {
 
@@ -31,10 +34,13 @@ export class SignUpLoginPage {
 
   private auth_select: string;
 
+  private movie_history: any = User.movie_history;
+
   constructor(
     public navCtrl: NavController,
     public db: AngularFireDatabase,
     public authService: AuthService,
+    //public fbService: FirebaseService,
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     private translate: TranslateService,
@@ -106,6 +112,16 @@ export class SignUpLoginPage {
         });
         alert.present();
       });
+  }
+
+  doRefresh(refresher) {
+    console.log('Begin async operation', refresher);
+    console.log(this.movie_history.Dislike);
+    this.authService.retrieveMovieHistory();
+    //this.movie_history.Dislike.forEach(element => {
+    //        console.log(element.key, element.value);
+    //    });
+    refresher.complete();
   }
 
 }
