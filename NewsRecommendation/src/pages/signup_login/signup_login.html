@@ -3,12 +3,13 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
+    <ion-title *ngIf="!unauthorized">Recommended Movies</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content id="signup_login">
+<ion-content id="signup_login" *ngIf="unauthorized">
   <div class="outer-container">
-    <div class="inner-container" *ngIf="unauthorized">
+    <div class="inner-container">
       <div style="padding-bottom: 15px;">
         <ion-segment [(ngModel)]="auth_select">
           <ion-segment-button value="sign_up">
@@ -55,14 +56,45 @@
         </div>
       </div>
     </div>
-    <ion-refresher *ngIf="!unauthorized" (ionRefresh)="doRefresh($event)">
-      <ion-refresher-content
-      pullingIcon="arrow-dropdown"
-      pullingText="Pull to update recommendation"
-      refreshingSpinner="circles"
-      refreshingText="Updating...">
-    </ion-refresher-content>
-    </ion-refresher>
   <p>Photo by Aleksandrs Tihonovs</p>
   </div>
+</ion-content>
+
+<!-- Recommendation results displayed after login -->
+<ion-content *ngIf="!unauthorized">
+  <div>
+    <ion-card *ngFor="let movie of movies">
+      <ion-card-content (click)="itemTapped($event, movie)">
+        <img [src]="movie.poster_path"/>
+        <ion-card-title>
+          {{movie.title}}
+          <ion-badge float-end>{{movie.vote_average}}</ion-badge>
+        </ion-card-title>
+      </ion-card-content>
+  
+      <ion-row no-padding>
+        <ion-col text-center>
+          <button ion-button clear small color="primary" icon-start (click)="like($event, movie)">
+            <ion-icon name='thumbs-up'></ion-icon>
+            Like
+          </button>
+        </ion-col>
+        <ion-col text-center>
+          <button ion-button clear small color="danger" icon-start (click)="dislike($event, movie)">
+            <ion-icon name='thumbs-down'></ion-icon>
+            Dislike
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </div>
+
+  <ion-refresher *ngIf="!unauthorized" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+    pullingIcon="arrow-dropdown"
+    pullingText="Pull to update recommendation"
+    refreshingSpinner="circles"
+    refreshingText="Updating...">
+    </ion-refresher-content>
+  </ion-refresher>
 </ion-content>
