@@ -101,7 +101,9 @@ export class SignUpLoginPage {
         loader.present();
         this.unauthorized = User.unauthorized = false;
         //this.navCtrl.push(HomePage);
-        this.appCtrl.getRootNav().push(HomePage);
+        // this.appCtrl.getRootNav().push(HomePage);
+        // Push back to root page
+        this.navCtrl.setRoot(HomePage);
       })
       .catch((error: any) => {
         console.log(error);
