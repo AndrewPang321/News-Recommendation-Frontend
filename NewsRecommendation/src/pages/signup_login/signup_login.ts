@@ -61,9 +61,13 @@ export class SignUpLoginPage {
     private toastCtrl: ToastController
   ) {
     this.auth_select = "login";
-    this.getMovies(333339);
-    console.log(this.user_name);
-    console.log(this.email);
+    // Get recommendation results
+    if (!this.unauthorized) {
+      this.prepareUserData()
+      this.getMovies(333339);
+      console.log(this.user_name);
+      console.log(this.email);
+    }
   }
 
   signup() {
@@ -115,10 +119,10 @@ export class SignUpLoginPage {
         });
         loader.present();
         this.unauthorized = User.unauthorized = false;
-        //this.navCtrl.push(HomePage);
-        // this.appCtrl.getRootNav().push(HomePage);
         // Push back to root page
         this.navCtrl.setRoot(HomePage);
+        // Get User's data
+        this.authService.retrieveMovieHistory();
       })
       .catch((error: any) => {
         console.log(error);
@@ -129,6 +133,13 @@ export class SignUpLoginPage {
         });
         alert.present();
       });
+  }
+
+  // Prepare user's data to get recommendation
+  prepareUserData() {
+    console.log(`like: ${User.movie_history.Like[0].id}`);
+    console.log(`dislike: ${User.movie_history.Dislike[0].id}`);
+    console.log(`history: ${User.movie_history.History[0].id}`);
   }
 
   getMovies(movieId) {

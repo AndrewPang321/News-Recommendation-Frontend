@@ -393,17 +393,36 @@ var AuthService = (function () {
         });
     };
     AuthService.prototype.retrieveMovieHistory = function () {
-        User.movie_history.Dislike = this.db.list("Users/" + User.firebase_user.uid + "/movie/dislike").valueChanges();
-        User.movie_history.History = this.db.list("Users/" + User.firebase_user.uid + "/movie/history").valueChanges();
-        User.movie_history.Like = this.db.list("Users/" + User.firebase_user.uid + "/movie/like").valueChanges();
+        this.db.list("Users/" + User.firebase_user.uid + "/movie/like").valueChanges()
+            .subscribe(function (result) {
+            User.movie_history.Like = result;
+            console.log(result);
+        }, function (error) {
+            console.log("Error received in calling this.db.list-LIKE");
+        });
+        this.db.list("Users/" + User.firebase_user.uid + "/movie/dislike").valueChanges()
+            .subscribe(function (result) {
+            User.movie_history.Dislike = result;
+            console.log(result);
+        }, function (error) {
+            console.log("Error received in calling this.db.list-DISLIKE");
+        });
+        this.db.list("Users/" + User.firebase_user.uid + "/movie/history").valueChanges()
+            .subscribe(function (result) {
+            User.movie_history.History = result;
+            console.log(result);
+        }, function (error) {
+            console.log("Error received in calling this.db.list-HISTORY");
+        });
     };
     return AuthService;
 }());
 AuthService = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_angularfire2_database__["a" /* AngularFireDatabase */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__["a" /* AngularFireAuth */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_angularfire2_database__["a" /* AngularFireDatabase */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angularfire2_database__["a" /* AngularFireDatabase */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__["a" /* AngularFireAuth */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__["a" /* AngularFireAuth */]) === "function" && _b || Object])
 ], AuthService);
 
+var _a, _b;
 //# sourceMappingURL=auth.service.js.map
 
 /***/ }),
@@ -466,9 +485,13 @@ var SignUpLoginPage = (function () {
         this.user_name = User.user_name;
         this.movie_history = User.movie_history;
         this.auth_select = "login";
-        this.getMovies(333339);
-        console.log(this.user_name);
-        console.log(this.email);
+        // Get recommendation results
+        if (!this.unauthorized) {
+            this.prepareUserData();
+            this.getMovies(333339);
+            console.log(this.user_name);
+            console.log(this.email);
+        }
     }
     SignUpLoginPage.prototype.signup = function () {
         var _this = this;
@@ -501,12 +524,12 @@ var SignUpLoginPage = (function () {
             });
         }
         else {
-            var alert_1 = this.alertCtrl.create({
+            var alert = this.alertCtrl.create({
                 title: 'Sign Up Failed',
                 subTitle: 'The confirm password should be the same as your passowrd',
                 buttons: ['OK']
             });
-            alert_1.present();
+            alert.present();
         }
     };
     SignUpLoginPage.prototype.login = function () {
@@ -520,10 +543,10 @@ var SignUpLoginPage = (function () {
             });
             loader.present();
             _this.unauthorized = User.unauthorized = false;
-            //this.navCtrl.push(HomePage);
-            // this.appCtrl.getRootNav().push(HomePage);
             // Push back to root page
             _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_7__home_home__["a" /* HomePage */]);
+            // Get User's data
+            _this.authService.retrieveMovieHistory();
         })
             .catch(function (error) {
             console.log(error);
@@ -534,6 +557,12 @@ var SignUpLoginPage = (function () {
             });
             alert.present();
         });
+    };
+    // Prepare user's data to get recommendation
+    SignUpLoginPage.prototype.prepareUserData = function () {
+        console.log("like: " + User.movie_history.Like[0].id);
+        console.log("dislike: " + User.movie_history.Dislike[0].id);
+        console.log("history: " + User.movie_history.History[0].id);
     };
     SignUpLoginPage.prototype.getMovies = function (movieId) {
         var _this = this;
@@ -624,19 +653,10 @@ SignUpLoginPage = __decorate([
             __WEBPACK_IMPORTED_MODULE_8__services_common_util_service__["a" /* CommonUtilService */]
         ]
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4_ionic_angular__["h" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_angularfire2_database__["a" /* AngularFireDatabase */],
-        __WEBPACK_IMPORTED_MODULE_2__providers_auth_service__["a" /* AuthService */],
-        __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["f" /* LoadingController */],
-        __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["a" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_3__ngx_translate_core__["c" /* TranslateService */],
-        __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["b" /* App */],
-        __WEBPACK_IMPORTED_MODULE_6__signup_login_service__["a" /* SignUpLoginPageService */],
-        __WEBPACK_IMPORTED_MODULE_5__services_spinner_service__["a" /* SpinnerService */],
-        __WEBPACK_IMPORTED_MODULE_8__services_common_util_service__["a" /* CommonUtilService */],
-        __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["k" /* ToastController */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_angularfire2_database__["a" /* AngularFireDatabase */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angularfire2_database__["a" /* AngularFireDatabase */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_auth_service__["a" /* AuthService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["f" /* LoadingController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["a" /* AlertController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__ngx_translate_core__["c" /* TranslateService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ngx_translate_core__["c" /* TranslateService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["b" /* App */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["b" /* App */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_6__signup_login_service__["a" /* SignUpLoginPageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__signup_login_service__["a" /* SignUpLoginPageService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_5__services_spinner_service__["a" /* SpinnerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_spinner_service__["a" /* SpinnerService */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_8__services_common_util_service__["a" /* CommonUtilService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__services_common_util_service__["a" /* CommonUtilService */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["k" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["k" /* ToastController */]) === "function" && _l || Object])
 ], SignUpLoginPage);
 
+var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
 //# sourceMappingURL=signup_login.js.map
 
 /***/ }),

@@ -77,9 +77,29 @@ export class AuthService {
   }
 
   retrieveMovieHistory() {
-    User.movie_history.Dislike = this.db.list(`Users/${User.firebase_user.uid}/movie/dislike`).valueChanges();
-    User.movie_history.History = this.db.list(`Users/${User.firebase_user.uid}/movie/history`).valueChanges();
-    User.movie_history.Like = this.db.list(`Users/${User.firebase_user.uid}/movie/like`).valueChanges();
+    this.db.list(`Users/${User.firebase_user.uid}/movie/like`).valueChanges()
+      .subscribe((result: any) => {
+        User.movie_history.Like = result;
+        console.log(result);
+      }, (error: any) => {
+        console.log(`Error received in calling this.db.list-LIKE`);
+      });
+
+    this.db.list(`Users/${User.firebase_user.uid}/movie/dislike`).valueChanges()
+      .subscribe((result: any) => {
+        User.movie_history.Dislike = result;
+        console.log(result);
+      }, (error: any) => {
+        console.log(`Error received in calling this.db.list-DISLIKE`);
+      });
+
+    this.db.list(`Users/${User.firebase_user.uid}/movie/history`).valueChanges()
+      .subscribe((result: any) => {
+        User.movie_history.History = result;
+        console.log(result);
+      }, (error: any) => {
+        console.log(`Error received in calling this.db.list-HISTORY`);
+      });
   }
 
 }
