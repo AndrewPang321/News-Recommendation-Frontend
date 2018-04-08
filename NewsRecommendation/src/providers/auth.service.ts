@@ -79,7 +79,7 @@ export class AuthService {
   retrieveMovieHistory() {
     this.db.list(`Users/${User.firebase_user.uid}/movie/like`, ref => ref.orderByChild('vote_average')).valueChanges()
       .subscribe((result: any) => {
-        User.movie_history.Like = result;
+        User.movie_history.Like = result.reverse();
         console.log(result);
       }, (error: any) => {
         console.log(`Error received in calling this.db.list-LIKE`);
@@ -87,7 +87,7 @@ export class AuthService {
 
     this.db.list(`Users/${User.firebase_user.uid}/movie/dislike`, ref => ref.orderByChild('vote_average')).valueChanges()
       .subscribe((result: any) => {
-        User.movie_history.Dislike = result;
+        User.movie_history.Dislike = result.reverse();
         console.log(result);
       }, (error: any) => {
         console.log(`Error received in calling this.db.list-DISLIKE`);
@@ -95,7 +95,7 @@ export class AuthService {
 
     this.db.list(`Users/${User.firebase_user.uid}/movie/history`, ref => ref.orderByChild('vote_average')).valueChanges()
       .subscribe((result: any) => {
-        User.movie_history.History = result;
+        User.movie_history.History = result.reverse();
         console.log(result);
       }, (error: any) => {
         console.log(`Error received in calling this.db.list-HISTORY`);

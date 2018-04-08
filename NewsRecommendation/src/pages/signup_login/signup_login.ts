@@ -45,6 +45,10 @@ export class SignUpLoginPage {
 
   // Recommended Movies
   movies: any;
+  moviesLikeHistory: any;
+  moviesDislike: any;
+  userLikeHistory: any[];
+  userDislike: any[];
 
   constructor(
     public navCtrl: NavController,
@@ -63,8 +67,24 @@ export class SignUpLoginPage {
     this.auth_select = "login";
     // Get recommendation results
     if (!this.unauthorized) {
-      this.prepareUserData()
-      this.getMovies(333339);
+      this.spinnerService.show();
+      this.prepareUserData();
+      // console.log(this.userLikeHistory);
+      // console.log(this.userDislike);
+      Promise.all([
+        this.getMoviesByLikeHistory(this.userLikeHistory),
+        this.getMoviesByDislike(this.userDislike)
+      ])
+        .then((result: any) => {
+          console.log(this.moviesLikeHistory.length);
+          console.log(this.moviesDislike.length);
+          this.movies = this.moviesLikeHistory.filter(this.arraysDifference(this.moviesDislike));
+          console.log(this.movies.length);
+          this.spinnerService.hide();
+        })
+        .catch((error: any) => {
+          this.spinnerService.hide();
+        });  
       console.log(this.user_name);
       console.log(this.email);
     }
@@ -137,27 +157,102 @@ export class SignUpLoginPage {
 
   // Prepare user's data to get recommendation
   prepareUserData() {
-    console.log(`like: ${User.movie_history.Like[0].id}`);
-    console.log(`dislike: ${User.movie_history.Dislike[0].id}`);
-    console.log(`history: ${User.movie_history.History[0].id}`);
+    let likeTop5 = [];
+    let historyTop5 = [];
+    let dislikeTop5 = [];
+    
+    // If user reads less then or equal to five readings
+    if (User.movie_history.Like.length <= 5) {
+      likeTop5 = User.movie_history.Like.map(item => item.id);
+    } else { // If user reads more then five readings
+      for (let i = 0; i < 5; i++) {
+        likeTop5[i] = User.movie_history.Like[i].id;
+      }
+    }
+
+    if (User.movie_history.History.length <= 5) {
+      historyTop5 = User.movie_history.History.map(item => item.id);
+    } else { // If user reads more then five readings
+      for (let i = 0; i < 5; i++) {
+        historyTop5[i] = User.movie_history.History[i].id;
+      }
+    }
+
+    if (User.movie_history.Dislike.length <= 5) {
+      dislikeTop5 = User.movie_history.Dislike.map(item => item.id);
+    } else { // If user reads more then five readings
+      for (let i = 0; i < 5; i++) {
+        dislikeTop5[i] = User.movie_history.Dislike[i].id;
+      }
+    }
+
+    this.userLikeHistory = [...likeTop5, ...historyTop5].filter((item, index, self) => self.indexOf(item) === index);
+    this.userDislike = dislikeTop5;
   }
 
-  getMovies(movieId) {
-    this.spinnerService.show();
+  // ~ Set Union, remove duplication
+  removeDuplicate(arr) {
+    return arr.filter((item, index, self) =>
+      index === self.findIndex((t) => (
+        t.id === item.id
+      ))
+    );
+  }
 
-    this.signUpLoginPageService.sendMovieDetails(movieId)
-      .then((result: any) => {
-        for (let i = 0; i < result.results.length; i++) {
-          result.results[i].poster_path = `https://image.tmdb.org/t/p/w500${result.results[i].poster_path}`
-        }
-        this.movies = result.results;
+  // ~ Set Difference, A - B
+  arraysDifference(arr2) {
+    return arr1 => arr2.filter(
+      (item, index, self) => item.id === arr1.id
+    ).length == 0;
+  }
 
-        this.spinnerService.hide();
-      })
-      .catch((error: any) => {
-        this.spinnerService.hide();
-        console.log(error);
-      });
+  arrOfQueries(moviesArr) {
+    return moviesArr.map(id => this.signUpLoginPageService.sendMovieDetails(id));
+  }
+
+  getMoviesByLikeHistory(moviesArr) {
+    return new Promise((resolve, reject) => {
+      Promise.all(this.arrOfQueries(moviesArr))
+        .then((result: any) => {
+          this.moviesLikeHistory = result[0].results;
+          for (let i = 1; i < result.length; i++) {
+            this.moviesLikeHistory = [...this.moviesLikeHistory, ...result[i].results];
+          }
+          for (let i = 0; i < this.moviesLikeHistory.length; i++) {
+            this.moviesLikeHistory[i].poster_path = `https://image.tmdb.org/t/p/w500${this.moviesLikeHistory[i].poster_path}`
+          }
+
+          this.moviesLikeHistory = this.removeDuplicate(this.moviesLikeHistory);
+          console.log(`likehistory: ${this.moviesLikeHistory.length}`);
+          resolve(true);
+        })
+        .catch((error: any) => {
+          console.log(error);
+          resolve(false);
+        });
+    });
+  }
+
+  getMoviesByDislike(moviesArr) {
+    return new Promise((resolve, reject) => {
+      Promise.all(this.arrOfQueries(moviesArr))
+        .then((result: any) => {
+          this.moviesDislike = result[0].results;
+          for (let i = 1; i < result.length; i++) {
+            this.moviesDislike = [...this.moviesDislike, ...result[i].results];
+          }
+          for (let i = 0; i < this.moviesDislike.length; i++) {
+            this.moviesDislike[i].poster_path = `https://image.tmdb.org/t/p/w500${this.moviesDislike[i].poster_path}`
+          }
+          this.moviesDislike = this.removeDuplicate(this.moviesDislike);
+          console.log(`dislike: ${this.moviesDislike.length}`);
+          resolve(true);
+        })
+        .catch((error: any) => {
+          console.log(error);
+          resolve(false);
+        });
+    });
   }
 
   like(event, movie) {
