@@ -76,10 +76,15 @@ export class SignUpLoginPage {
         this.getMoviesByDislike(this.userDislike)
       ])
         .then((result: any) => {
-          console.log(this.moviesLikeHistory.length);
-          console.log(this.moviesDislike.length);
+          console.log(`LikeHistory: ${this.moviesLikeHistory.length}`);
+          console.log(`Dislike: ${this.moviesDislike.length}`);
+          // Set Difference
           this.movies = this.moviesLikeHistory.filter(this.arraysDifference(this.moviesDislike));
-          console.log(this.movies.length);
+          console.log(`Movies before slicing: ${this.movies.length}`);
+          // Sort by ratings desc
+          this.movies.sort((a, b) => b.vote_average - a.vote_average);
+          // Only display top 20 movies using slicing
+          this.movies = this.movies.slice(0, 20);
           this.spinnerService.hide();
         })
         .catch((error: any) => {
@@ -223,7 +228,7 @@ export class SignUpLoginPage {
           }
 
           this.moviesLikeHistory = this.removeDuplicate(this.moviesLikeHistory);
-          console.log(`likehistory: ${this.moviesLikeHistory.length}`);
+          // console.log(`likehistory: ${this.moviesLikeHistory.length}`);
           resolve(true);
         })
         .catch((error: any) => {
@@ -245,7 +250,7 @@ export class SignUpLoginPage {
             this.moviesDislike[i].poster_path = `https://image.tmdb.org/t/p/w500${this.moviesDislike[i].poster_path}`
           }
           this.moviesDislike = this.removeDuplicate(this.moviesDislike);
-          console.log(`dislike: ${this.moviesDislike.length}`);
+          // console.log(`dislike: ${this.moviesDislike.length}`);
           resolve(true);
         })
         .catch((error: any) => {
