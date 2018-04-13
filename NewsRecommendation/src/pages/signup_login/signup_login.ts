@@ -83,8 +83,10 @@ export class SignUpLoginPage {
           console.log(`Movies before slicing: ${this.movies.length}`);
           // Sort by ratings desc
           this.movies.sort((a, b) => b.vote_average - a.vote_average);
-          // Only display top 20 movies using slicing
-          this.movies = this.movies.slice(0, 20);
+          if (this.movies.length > 20) {
+            // Only display top 20 movies using slicing
+            this.movies = this.movies.slice(0, 20);
+          }
           this.spinnerService.hide();
         })
         .catch((error: any) => {
