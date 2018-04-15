@@ -87,6 +87,8 @@
         </ion-col>
       </ion-row>
     </ion-card>
+
+    <ion-item *ngIf="movies == undefined">Recommendation is not available.</ion-item>
   </div>
 
   <ion-refresher *ngIf="!unauthorized" (ionRefresh)="doRefresh($event)">
