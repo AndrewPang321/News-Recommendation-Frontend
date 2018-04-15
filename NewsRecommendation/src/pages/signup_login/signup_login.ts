@@ -80,6 +80,10 @@ export class SignUpLoginPage {
           console.log(`Dislike: ${this.moviesDislike.length}`);
           // Set Difference
           this.movies = this.moviesLikeHistory.filter(this.arraysDifference(this.moviesDislike));
+          // Remove duplication from user's like, dislike and history
+          this.movies = this.movies.filter(this.arraysDifference(User.movie_history.Like));
+          this.movies = this.movies.filter(this.arraysDifference(User.movie_history.Dislike));
+          this.movies = this.movies.filter(this.arraysDifference(User.movie_history.History));
           console.log(`Movies before slicing: ${this.movies.length}`);
           // Sort by ratings desc
           this.movies.sort((a, b) => b.vote_average - a.vote_average);
