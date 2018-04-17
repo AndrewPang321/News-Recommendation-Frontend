@@ -91,6 +91,11 @@ export class SignUpLoginPage {
             // Only display top 20 movies using slicing
             this.movies = this.movies.slice(0, 20);
           }
+
+          // for (let i = 0; i < this.movies.length; i++) {
+          //   console.log(`${this.movies[i].id} "${this.movies[i].title}"`);
+          // }
+
           this.spinnerService.hide();
         })
         .catch((error: any) => {
@@ -166,8 +171,14 @@ export class SignUpLoginPage {
       });
   }
 
+  removeDuplicationFromHistoryAndDislike() {
+    return User.movie_history.History.filter(this.arraysDifference(User.movie_history.Dislike));
+  }
+
   // Prepare user's data to get recommendation
   prepareUserData() {
+    let userPurifiedHistory = this.removeDuplicationFromHistoryAndDislike();
+
     let likeTop5 = [];
     let historyTop5 = [];
     let dislikeTop5 = [];
@@ -181,11 +192,11 @@ export class SignUpLoginPage {
       }
     }
 
-    if (User.movie_history.History.length <= 5) {
-      historyTop5 = User.movie_history.History.map(item => item.id);
+    if (userPurifiedHistory.length <= 5) {
+      historyTop5 = userPurifiedHistory.map(item => item.id);
     } else { // If user reads more then five readings
       for (let i = 0; i < 5; i++) {
-        historyTop5[i] = User.movie_history.History[i].id;
+        historyTop5[i] = userPurifiedHistory[i].id;
       }
     }
 
