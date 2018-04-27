@@ -78,8 +78,12 @@ export class SignUpLoginPage {
         .then((result: any) => {
           console.log(`LikeHistory: ${this.moviesLikeHistory.length}`);
           console.log(`Dislike: ${this.moviesDislike.length}`);
-          // Set Difference
-          this.movies = this.moviesLikeHistory.filter(this.arraysDifference(this.moviesDislike));
+          if (this.moviesDislike.length > 0) {
+            // Set Difference
+            this.movies = this.moviesLikeHistory.filter(this.arraysDifference(this.moviesDislike));
+          } else {
+            this.movies = this.moviesLikeHistory;
+          }
           // Remove duplication from user's like, dislike and history
           this.movies = this.movies.filter(this.arraysDifference(User.movie_history.Like));
           this.movies = this.movies.filter(this.arraysDifference(User.movie_history.Dislike));
@@ -256,25 +260,29 @@ export class SignUpLoginPage {
   }
 
   getMoviesByDislike(moviesArr) {
-    return new Promise((resolve, reject) => {
-      Promise.all(this.arrOfQueries(moviesArr))
-        .then((result: any) => {
-          this.moviesDislike = result[0].results;
-          for (let i = 1; i < result.length; i++) {
-            this.moviesDislike = [...this.moviesDislike, ...result[i].results];
-          }
-          for (let i = 0; i < this.moviesDislike.length; i++) {
-            this.moviesDislike[i].poster_path = `https://image.tmdb.org/t/p/w500${this.moviesDislike[i].poster_path}`
-          }
-          this.moviesDislike = this.removeDuplicate(this.moviesDislike);
-          // console.log(`dislike: ${this.moviesDislike.length}`);
-          resolve(true);
-        })
-        .catch((error: any) => {
-          console.log(error);
-          resolve(false);
-        });
-    });
+    if (moviesArr.length != 0) {
+      return new Promise((resolve, reject) => {
+        Promise.all(this.arrOfQueries(moviesArr))
+          .then((result: any) => {
+            this.moviesDislike = result[0].results;
+            for (let i = 1; i < result.length; i++) {
+              this.moviesDislike = [...this.moviesDislike, ...result[i].results];
+            }
+            for (let i = 0; i < this.moviesDislike.length; i++) {
+              this.moviesDislike[i].poster_path = `https://image.tmdb.org/t/p/w500${this.moviesDislike[i].poster_path}`
+            }
+            this.moviesDislike = this.removeDuplicate(this.moviesDislike);
+            // console.log(`dislike: ${this.moviesDislike.length}`);
+            resolve(true);
+          })
+          .catch((error: any) => {
+            console.log(error);
+            resolve(false);
+          });
+      });
+    } else {
+      this.moviesDislike = [];
+    }
   }
 
   like(event, movie) {
